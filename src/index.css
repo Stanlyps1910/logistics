@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  
+  --color-primary: #0047cc;
+  --color-secondary: #00b4d8;
+  --color-highlight: #00d4ff;
+  --color-dark: #0a1628;
+  --color-body: #334155;
+  --color-light-bg: #f0f4ff;
+  --color-surface-bg: #e8eef8;
+
+  --animate-shimmer: shimmer 2.5s infinite linear;
+  --animate-pulse-glow: pulse-glow 2s infinite ease-in-out;
+  --animate-float: float 6s infinite ease-in-out;
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 15px rgba(0, 180, 216, 0.2); }
+    50% { box-shadow: 0 0 25px rgba(0, 180, 216, 0.5); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+/* Base resets & theme styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    color: var(--color-body);
+    background-color: #ffffff;
+  }
+
+  body {
+    overflow-x: hidden;
+    background-color: #ffffff;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-dark);
+  }
+}
+
+/* Utility styles */
+@layer utilities {
+  /* Glassmorphism card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 71, 204, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 71, 204, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card-hover {
+    border-color: rgba(0, 180, 216, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 71, 204, 0.16);
+    transform: translateY(-4px);
+  }
+
+  /* Grid structure */
+  .grid-lines {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(0, 71, 204, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 71, 204, 0.035) 1px, transparent 1px);
+  }
+
+  /* Shimmer sweep effect */
+  .shimmer-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shimmer-sweep::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 212, 255, 0.15) 50%,
+      transparent 100%
+    );
+    transform: skewX(-25deg);
+    transition: 0.75s;
+  }
+
+  .shimmer-sweep:hover::after {
+    left: 150%;
+    transition: 0.75s;
+  }
+
+  /* Neon cyan glow text */
+  .text-glow {
+    text-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f4ff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0047cc;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00b4d8;
+}
+
+/* Custom styles for pages and routing */
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
