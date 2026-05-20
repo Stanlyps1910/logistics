@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Loader({ onComplete }) {
   const [isVisible, setIsVisible] = useState(true);
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      if (onComplete) {
-        setTimeout(onComplete, 500); // Allow exit animation to finish
+      if (onCompleteRef.current) {
+        setTimeout(onCompleteRef.current, 500);
       }
-    }, 2200); // 2.2s show time
+    }, 2200);
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, []);
 
   return (
     <AnimatePresence>

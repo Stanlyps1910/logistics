@@ -1,9 +1,26 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 export default function StatsCounter({ targetValue, duration = 2000, suffix = "", prefix = "" }) {
   const [count, setCount] = useState(0);
   const elementRef = useRef(null);
   const hasAnimated = useRef(false);
+
+  const startCountAnimation = useCallback(() => {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easeOutQuad = progress * (2 - progress);
+      const currentValue = Math.floor(easeOutQuad * targetValue);
+      setCount(currentValue);
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        setCount(targetValue);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }, [targetValue, duration]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -22,32 +39,9 @@ export default function StatsCounter({ targetValue, duration = 2000, suffix = ""
     }
 
     return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
-      }
+      observer.disconnect();
     };
-  }, [targetValue, duration]);
-
-  const startCountAnimation = () => {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      
-      // Easing out quadratic function
-      const easeOutQuad = progress * (2 - progress);
-      const currentValue = Math.floor(easeOutQuad * targetValue);
-      
-      setCount(currentValue);
-
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      } else {
-        setCount(targetValue);
-      }
-    };
-    window.requestAnimationFrame(step);
-  };
+  }, [startCountAnimation]);
 
   // Format count with commas
   const formatNumber = (num) => {

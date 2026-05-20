@@ -1,9 +1,7 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { 
   Send, 
-  ShieldCheck, 
-  Globe, 
+  ShieldCheck,  
   Award, 
   MapPin, 
   Phone, 

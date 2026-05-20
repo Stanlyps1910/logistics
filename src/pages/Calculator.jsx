@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calculator, ArrowRight, ShieldCheck, Scale, Ruler, Plane, Ship, Truck, Navigation, Receipt } from "lucide-react";
 
@@ -22,6 +22,12 @@ export default function QuoteCalculator() {
 
   const [quoteResult, setQuoteResult] = useState(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -38,6 +44,7 @@ export default function QuoteCalculator() {
 
     // Simulate network telemetry computation delay
     setTimeout(() => {
+      if (!mountedRef.current) return;
       const weightVal = parseFloat(formData.weight) || 1;
       const l = parseFloat(formData.length) || 10;
       const w = parseFloat(formData.width) || 10;
@@ -47,26 +54,13 @@ export default function QuoteCalculator() {
       const dimensionalWeight = (l * w * h) / 5000;
       const billableWeight = Math.max(weightVal, dimensionalWeight);
 
-      let ratePerKg = 1.25; // Road
-      let deliveryTime = "2 - 3 Operations Days";
-      
-      switch (formData.freightType) {
-        case "air":
-          ratePerKg = 4.80;
-          deliveryTime = "6 - 12 Hours (Sub-orbital)";
-          break;
-        case "ocean":
-          ratePerKg = 0.75;
-          deliveryTime = "10 - 14 Operations Days";
-          break;
-        case "drone":
-          ratePerKg = 8.50;
-          deliveryTime = "1 - 2 Hours (Local VTOL Drone)";
-          break;
-        default:
-          ratePerKg = 1.25;
-          deliveryTime = "2 - 3 Operations Days";
-      }
+      const rates = {
+        road: { rate: 1.25, time: "2 - 3 Operations Days" },
+        air: { rate: 4.80, time: "6 - 12 Hours (Sub-orbital)" },
+        ocean: { rate: 0.75, time: "10 - 14 Operations Days" },
+        drone: { rate: 8.50, time: "1 - 2 Hours (Local VTOL Drone)" },
+      };
+      const { rate: ratePerKg, time: deliveryTime } = rates[formData.freightType] || rates.road;
 
       const basePrice = billableWeight * ratePerKg;
       const fuelSurcharge = basePrice * 0.08; // 8%

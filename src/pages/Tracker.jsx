@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, MapPin, Calendar, Clock, Box, ShieldAlert, CheckCircle2, ArrowRight } from "lucide-react";
 
@@ -292,7 +292,7 @@ export default function Tracker() {
                               </div>
                               <div className="flex items-center md:justify-center gap-1.5">
                                 <Clock className="w-3.5 h-3.5 shrink-0 text-slate-400" />
-                                <span>{details.date.split(" - ")[1]}</span>
+                                <span>{details.date.split(" - ")[1] || "—"}</span>
                               </div>
                               <div className="flex items-center md:justify-center gap-1.5 font-semibold text-primary">
                                 <MapPin className="w-3.5 h-3.5 shrink-0 text-primary" />

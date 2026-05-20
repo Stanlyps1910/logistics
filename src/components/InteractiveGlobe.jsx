@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Simplified boundary coordinate database for major countries / regions
 const countriesData = [
@@ -527,10 +527,8 @@ export default function InteractiveGlobe() {
       });
 
       // 5. Draw shipping arcs connecting Bengaluru HQ to other nodes
-      const hqProj = project(hqHub);
 
       destHubs.forEach((dest, idx) => {
-        const destProj = project(dest);
         
         // Generate shipping arc segment points
         ctx.beginPath();

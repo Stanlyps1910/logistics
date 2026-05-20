@@ -1,6 +1,5 @@
-import React from "react";
 import { motion } from "framer-motion";
-import { Award, Shield, Users, Globe2, Briefcase, ChevronRight, Milestone } from "lucide-react";
+import { Award, Shield, Users, Globe2 } from "lucide-react";
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },

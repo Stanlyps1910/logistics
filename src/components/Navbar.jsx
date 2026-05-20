@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight, Shield } from "lucide-react";
+import { Menu, X, ArrowRight, Shield, User, LogOut, ChevronDown } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [portalDropdown, setPortalDropdown] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,8 +26,24 @@ export default function Navbar() {
 
   // Close mobile menu on route change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(false);
+    setPortalDropdown(false);
   }, [location]);
+
+  // Close portal dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = () => setPortalDropdown(false);
+    if (portalDropdown) {
+      document.addEventListener("click", handleClickOutside);
+      return () => document.removeEventListener("click", handleClickOutside);
+    }
+  }, [portalDropdown]);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -87,8 +107,94 @@ export default function Navbar() {
               ))}
             </nav>
 
-            {/* CTA Button */}
-            <div className="hidden md:block">
+            {/* Right side: Portal + CTA */}
+            <div className="hidden md:flex items-center gap-2">
+              {/* Portal Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPortalDropdown(!portalDropdown);
+                  }}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border transition-all duration-200 ${
+                    isAuthenticated
+                      ? "bg-green-50 border-green-200 text-green-700 hover:bg-green-100"
+                      : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                  }`}
+                >
+                  {isAuthenticated ? (
+                    <>
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                      <span className="font-display">{user.name.split(" ")[0]}</span>
+                    </>
+                  ) : (
+                    <>
+                      <User className="w-3.5 h-3.5" />
+                      <span className="font-display">Portal</span>
+                    </>
+                  )}
+                  <ChevronDown className={`w-3 h-3 transition-transform ${portalDropdown ? "rotate-180" : ""}`} />
+                </button>
+
+                {/* Dropdown menu */}
+                <AnimatePresence>
+                  {portalDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -5, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -5, scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-md border border-blue-100/60 rounded-xl shadow-[0_12px_40px_rgba(0,71,204,0.12)] overflow-hidden z-50"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {isAuthenticated ? (
+                        <div className="p-2">
+                          <div className="px-3 py-2 border-b border-blue-50 mb-1">
+                            <p className="text-xs font-bold text-dark font-display">{user.name}</p>
+                            <p className="text-[10px] text-slate-400 font-sans">{user.email}</p>
+                            <span className="inline-block mt-1 text-[9px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-2 py-0.5 rounded-full font-display">
+                              {user.role === "admin" ? "Admin" : "Client"}
+                            </span>
+                          </div>
+                          <Link
+                            to={user.role === "admin" ? "/admin/dashboard" : "/client/dashboard"}
+                            className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-blue-50 rounded-lg transition-colors font-sans"
+                          >
+                            {user.role === "admin" ? <Shield className="w-4 h-4 text-primary" /> : <User className="w-4 h-4 text-primary" />}
+                            My Dashboard
+                          </Link>
+                          <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center gap-2 px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors font-sans"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            Sign Out
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="p-2">
+                          <Link
+                            to="/client/login"
+                            className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-50 rounded-lg transition-colors font-sans"
+                          >
+                            <User className="w-4 h-4 text-primary" />
+                            Client Login
+                          </Link>
+                          <Link
+                            to="/admin/login"
+                            className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-50 rounded-lg transition-colors font-sans"
+                          >
+                            <Shield className="w-4 h-4 text-primary" />
+                            Admin Login
+                          </Link>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Track CTA */}
               <Link
                 to="/tracker"
                 className="relative inline-flex items-center justify-center px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-primary rounded-lg overflow-hidden group shadow-[0_4px_15px_rgba(0,71,204,0.2)] hover:shadow-[0_0_20px_rgba(0,180,216,0.4)] transition-all duration-300"
@@ -150,6 +256,48 @@ export default function Navbar() {
                     {link.name}
                   </NavLink>
                 ))}
+
+                {/* Portal Links (Mobile) */}
+                <div className="pt-2 border-t border-blue-100 mt-2">
+                  {isAuthenticated ? (
+                    <>
+                      <div className="px-4 py-2 mb-2">
+                        <p className="text-xs font-bold text-dark font-display">{user.name}</p>
+                        <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-2 py-0.5 rounded-full font-display">
+                          {user.role === "admin" ? "Admin" : "Client"}
+                        </span>
+                      </div>
+                      <Link
+                        to={user.role === "admin" ? "/admin/dashboard" : "/client/dashboard"}
+                        className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-primary hover:bg-blue-50 transition-all"
+                      >
+                        My Dashboard
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-red-600 hover:bg-red-50 transition-all"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/client/login"
+                        className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-slate-600 hover:bg-blue-50 hover:text-primary transition-all"
+                      >
+                        Client Login
+                      </Link>
+                      <Link
+                        to="/admin/login"
+                        className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-slate-600 hover:bg-blue-50 hover:text-primary transition-all"
+                      >
+                        Admin Login
+                      </Link>
+                    </>
+                  )}
+                </div>
+
                 <div className="pt-4 px-4">
                   <Link
                     to="/tracker"

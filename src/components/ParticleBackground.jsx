@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export default function ParticleBackground() {
   const canvasRef = useRef(null);
@@ -17,8 +17,14 @@ export default function ParticleBackground() {
     
     const resizeCanvas = () => {
       const parent = canvas.parentElement;
-      canvas.width = parent ? parent.clientWidth : window.innerWidth;
-      canvas.height = parent ? parent.clientHeight : window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      const width = parent ? parent.clientWidth : window.innerWidth;
+      const height = parent ? parent.clientHeight : window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      ctx.scale(dpr, dpr);
     };
 
     window.addEventListener("resize", resizeCanvas);
@@ -26,11 +32,14 @@ export default function ParticleBackground() {
 
     // Initialize particles
     particles = [];
+    const parent = canvas.parentElement;
+    const width = parent ? parent.clientWidth : window.innerWidth;
+    const height = parent ? parent.clientHeight : window.innerHeight;
     for (let i = 0; i < particleCount; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4, // Slow speed
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.4,
         vy: (Math.random() - 0.5) * 0.4,
         radius: Math.random() * 2 + 1.5,
       });
@@ -38,16 +47,17 @@ export default function ParticleBackground() {
 
     // Animation Loop
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = parent ? parent.clientWidth : window.innerWidth;
+      const h = parent ? parent.clientHeight : window.innerHeight;
+      ctx.clearRect(0, 0, w, h);
       
       // Update and Draw Particles
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
 
-        // Boundary Check (Bounce gently or wrap around)
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -66,7 +76,6 @@ export default function ParticleBackground() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < connectionDistance) {
-            // Line opacity scales from 0 to 0.15 based on closeness
             const alpha = (1 - dist / connectionDistance) * 0.15;
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);

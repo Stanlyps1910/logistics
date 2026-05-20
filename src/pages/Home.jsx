@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Plane, Ship, Truck, CheckCircle2, Star, Shield, Cpu, RefreshCw } from "lucide-react";
+import { ArrowRight, Plane, Ship, Truck, CheckCircle2, Star, Cpu } from "lucide-react";
 import ParticleBackground from "../components/ParticleBackground";
 import StatsCounter from "../components/StatsCounter";
 import InteractiveGlobe from "../components/InteractiveGlobe";
@@ -446,13 +446,12 @@ export default function Home() {
           
           <div className="relative w-full flex items-center">
             {/* Infinite Horizontal Logo Scroll */}
-            <div className="flex space-x-12 animate-[shimmer_20s_linear_infinite] whitespace-nowrap min-w-full justify-between items-center opacity-40">
+            <div className="flex space-x-12 whitespace-nowrap min-w-full justify-between items-center opacity-40" style={{ animation: 'marquee 20s linear infinite' }}>
               {logos.map((logo, index) => (
                 <span key={index} className="text-sm font-black font-display tracking-widest text-[#0a1628]">
                   {logo}
                 </span>
               ))}
-              {/* Duplicate logos to ensure seamless wrap */}
               {logos.map((logo, index) => (
                 <span key={`dup-${index}`} className="text-sm font-black font-display tracking-widest text-[#0a1628]">
                   {logo}

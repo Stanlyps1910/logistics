@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send, HelpCircle, MessageSquare } from "lucide-react";
 import FAQAccordion from "../components/FAQAccordion";
