@@ -25,10 +25,20 @@ app.use("/api/quotes", quotesRoutes);
 app.use("/api/shipments", shipmentsRoutes);
 app.use("/api/clients", clientsRoutes);
 
-// Root Endpoint
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to NexaFreight Logistics API" });
-});
+const path = require("path");
+
+// Serve Static Frontend Assets in Production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../dist", "index.html"));
+  });
+} else {
+  // Root Endpoint
+  app.get("/", (req, res) => {
+    res.json({ message: "Welcome to NexaFreight Logistics API" });
+  });
+}
 
 // Global Error Handler
 app.use((err, req, res, next) => {
