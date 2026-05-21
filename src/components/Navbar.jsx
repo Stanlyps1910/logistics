@@ -153,14 +153,14 @@ export default function Navbar() {
                             <p className="text-xs font-bold text-dark font-display">{user.name}</p>
                             <p className="text-[10px] text-slate-400 font-sans">{user.email}</p>
                             <span className="inline-block mt-1 text-[9px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-2 py-0.5 rounded-full font-display">
-                              {user.role === "admin" ? "Admin" : "Client"}
+                              Admin
                             </span>
                           </div>
                           <Link
-                            to={user.role === "admin" ? "/admin/dashboard" : "/client/dashboard"}
+                            to="/admin/dashboard"
                             className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-blue-50 rounded-lg transition-colors font-sans"
                           >
-                            {user.role === "admin" ? <Shield className="w-4 h-4 text-primary" /> : <User className="w-4 h-4 text-primary" />}
+                            <Shield className="w-4 h-4 text-primary" />
                             My Dashboard
                           </Link>
                           <button
@@ -173,13 +173,6 @@ export default function Navbar() {
                         </div>
                       ) : (
                         <div className="p-2">
-                          <Link
-                            to="/client/login"
-                            className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-50 rounded-lg transition-colors font-sans"
-                          >
-                            <User className="w-4 h-4 text-primary" />
-                            Client Login
-                          </Link>
                           <Link
                             to="/admin/login"
                             className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-50 rounded-lg transition-colors font-sans"
@@ -264,11 +257,11 @@ export default function Navbar() {
                       <div className="px-4 py-2 mb-2">
                         <p className="text-xs font-bold text-dark font-display">{user.name}</p>
                         <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-2 py-0.5 rounded-full font-display">
-                          {user.role === "admin" ? "Admin" : "Client"}
+                          Admin
                         </span>
                       </div>
                       <Link
-                        to={user.role === "admin" ? "/admin/dashboard" : "/client/dashboard"}
+                        to="/admin/dashboard"
                         className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-primary hover:bg-blue-50 transition-all"
                       >
                         My Dashboard
@@ -282,12 +275,6 @@ export default function Navbar() {
                     </>
                   ) : (
                     <>
-                      <Link
-                        to="/client/login"
-                        className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-slate-600 hover:bg-blue-50 hover:text-primary transition-all"
-                      >
-                        Client Login
-                      </Link>
                       <Link
                         to="/admin/login"
                         className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-slate-600 hover:bg-blue-50 hover:text-primary transition-all"

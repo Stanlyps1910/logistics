@@ -24,21 +24,28 @@ export default function AdminLogin() {
     return () => { mountedRef.current = false; };
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    setTimeout(() => {
+    try {
+      const result = await login(email, password);
       if (!mountedRef.current) return;
-      const result = login(email, password, "admin");
       if (result.success) {
         navigate("/admin/dashboard");
       } else {
         setError(result.message);
       }
-      setIsLoading(false);
-    }, 800);
+    } catch {
+      if (mountedRef.current) {
+        setError("An unexpected error occurred.");
+      }
+    } finally {
+      if (mountedRef.current) {
+        setIsLoading(false);
+      }
+    }
   };
 
   return (
@@ -160,9 +167,6 @@ export default function AdminLogin() {
             transition={{ delay: 0.5 }}
             className="text-center mt-6 space-y-2"
           >
-            <p className="text-xs text-slate-400 font-sans">
-              Looking for the client portal? <Link to="/client/login" className="text-primary font-semibold hover:underline">Client Login →</Link>
-            </p>
             <p className="text-xs text-slate-400 font-sans">
               <Link to="/" className="text-slate-500 hover:text-primary transition-colors">← Back to Home</Link>
             </p>

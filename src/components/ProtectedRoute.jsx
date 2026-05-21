@@ -5,7 +5,7 @@ export default function ProtectedRoute({ children, requiredRole }) {
   const { user, isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
-    return <Navigate to={requiredRole === "admin" ? "/admin/login" : "/client/login"} replace />;
+    return <Navigate to="/admin/login" replace />;
   }
 
   if (requiredRole && user.role !== requiredRole) {

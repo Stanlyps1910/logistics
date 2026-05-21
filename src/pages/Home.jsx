@@ -34,44 +34,44 @@ export default function Home() {
   const previewServices = [
     {
       icon: <Truck className="w-8 h-8 text-primary" />,
-      title: "Smart Road Freight",
-      description: "Electric vehicle fleets utilizing advanced sensors and route planning to navigate highways safely.",
+      title: "Road Transport",
+      description: "Modern cargo trucks and professional drivers utilizing optimized routes to deliver goods safely.",
     },
     {
       icon: <Plane className="w-8 h-8 text-primary" />,
-      title: "Express Air Delivery",
-      description: "Priority air freight utilizing optimized flight corridors and fast regional connections to bypass bottlenecks.",
+      title: "Fast Air Shipping",
+      description: "Priority air freight using direct routes and quick airport processing for urgent domestic deliveries.",
     },
     {
       icon: <Ship className="w-8 h-8 text-primary" />,
-      title: "Smart Maritime Freight",
-      description: "Smart shipping containers with real-time tracking ensuring precision routing and safe delivery across oceans.",
+      title: "Sea Cargo",
+      description: "Reliable ocean transport with real-time GPS tracking and cargo monitoring for commercial shipments.",
     }
   ];
 
   const testimonials = [
     {
-      quote: "NexaFreight revolutionized our cold chain distribution. Temperature monitoring is extremely precise, saving millions in pharmaceuticals.",
-      author: "Dr. Aris Vance",
-      company: "BioHelix Pharmaceuticals",
+      quote: "NexaFreight simplified our cold chain logistics. Their temperature monitoring is reliable, ensuring our pharmaceutical supplies reach safely.",
+      author: "Amit Sharma",
+      company: "Arogya Pharmaceuticals",
       rating: 5,
     },
     {
-      quote: "Their delivery fleet is incredibly consistent. The predictive transit timelines have reshaped how we manage warehousing inventory.",
-      author: "Elena Rostova",
-      company: "Apex Robotic Systems",
+      quote: "Their road transport fleet is incredibly consistent. The simple tracking system has helped us manage our warehouse inventory and schedule shipments easily.",
+      author: "Rajesh Mehta",
+      company: "Mehta Distributors",
       rating: 5,
     },
     {
-      quote: "We calculated shipping costs to 12 different ports instantly. The quote tool was within 1% of the final invoice. Unparalleled accuracy.",
-      author: "Marcus Vance",
-      company: "OmniTech Global",
+      quote: "We calculated shipping costs across major Indian states instantly. The quote calculator is extremely accurate and helps us plan our logistics budget.",
+      author: "Sanjay Singhania",
+      company: "Singhania Steel & Power",
       rating: 5,
     }
   ];
 
   const logos = [
-    "QUANTUM CORP", "HYPERLOOP SYSTEMS", "AEROTECH", "BIOPHARMA", "NEPTUNE MARITIME", "ALPHATECH"
+    "TATA STEEL", "RELIANCE INDUSTRIES", "MAHINDRA LOGISTICS", "ITC LIMITED", "ADANI PORTS", "LARSEN & TOUBRO"
   ];
 
   return (
@@ -137,7 +137,7 @@ export default function Home() {
                 transition={{ delay: 0.8, duration: 0.6 }}
                 className="mt-6 text-base md:text-xl text-slate-600 max-w-3xl mx-auto lg:mx-0 font-sans leading-relaxed"
               >
-                Experience smart scheduling, optimized route planning, and complete supply-chain transparency. A modern logistics network designed for global speed.
+                Experience reliable scheduling, optimized route planning, and complete supply-chain transparency. A modern logistics network designed for fast and secure shipping.
               </motion.p>
 
               {/* CTAs */}
@@ -260,7 +260,7 @@ export default function Home() {
               OUR LOGISTICS SERVICES
             </h2>
             <p className="mt-4 text-base md:text-lg text-slate-500">
-              Integrating advanced vehicle routing, real-time tracking, and automated cargo handling to deliver reliable logistics.
+              Integrating reliable vehicle routing, real-time tracking, and efficient cargo handling to deliver dependable logistics.
             </p>
           </div>
 
@@ -319,7 +319,7 @@ export default function Home() {
                 SMART ROUTE PLANNING
               </h2>
               <p className="mt-6 text-slate-600 leading-relaxed text-base">
-                Our route planning systems monitor weather patterns, port traffic, and customs queues in real-time. Optimized route planning ensures your shipments avoid delays.
+                Our team monitors weather patterns, port traffic, and customs clearance in real-time. Optimized route planning ensures your shipments avoid unnecessary delays.
               </p>
 
               <div className="mt-8 space-y-4">

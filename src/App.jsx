@@ -22,8 +22,6 @@ import Calculator from "./pages/Calculator";
 import Contact from "./pages/Contact";
 
 // Portal Pages
-import ClientLogin from "./pages/ClientLogin";
-import ClientDashboard from "./pages/ClientDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 
@@ -47,12 +45,6 @@ function AnimatedRoutes() {
         <Route path="/tracker" element={<Tracker />} />
         <Route path="/calculator" element={<Calculator />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/client/login" element={<ClientLogin />} />
-        <Route path="/client/dashboard" element={
-          <ProtectedRoute requiredRole="client">
-            <ClientDashboard />
-          </ProtectedRoute>
-        } />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={
           <ProtectedRoute requiredRole="admin">
@@ -66,7 +58,7 @@ function AnimatedRoutes() {
 
 function Layout() {
   const { pathname } = useLocation();
-  const isDashboard = pathname === "/client/dashboard" || pathname === "/admin/dashboard";
+  const isDashboard = pathname === "/admin/dashboard";
 
   return (
     <div className="flex flex-col min-h-screen bg-white">

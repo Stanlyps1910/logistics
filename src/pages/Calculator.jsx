@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calculator, ArrowRight, ShieldCheck, Scale, Ruler, Plane, Ship, Truck, Navigation, Receipt } from "lucide-react";
+import { Calculator, ArrowRight, ShieldCheck, Scale, Ruler, Plane, Ship, Truck, Receipt } from "lucide-react";
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
@@ -55,17 +55,16 @@ export default function QuoteCalculator() {
       const billableWeight = Math.max(weightVal, dimensionalWeight);
 
       const rates = {
-        road: { rate: 1.25, time: "2 - 3 Operations Days" },
-        air: { rate: 4.80, time: "6 - 12 Hours (Sub-orbital)" },
-        ocean: { rate: 0.75, time: "10 - 14 Operations Days" },
-        drone: { rate: 8.50, time: "1 - 2 Hours (Local VTOL Drone)" },
+        road: { rate: 25.00, time: "3 - 5 Days" },
+        air: { rate: 150.00, time: "1 - 2 Days" },
+        ocean: { rate: 15.00, time: "7 - 10 Days" },
       };
       const { rate: ratePerKg, time: deliveryTime } = rates[formData.freightType] || rates.road;
 
       const basePrice = billableWeight * ratePerKg;
       const fuelSurcharge = basePrice * 0.08; // 8%
-      const regulatoryFee = 15.00;
-      const insuranceCost = formData.insurance ? Math.max(basePrice * 0.02, 25.00) : 0; // 2% of cost or min $25
+      const regulatoryFee = 250.00;
+      const insuranceCost = formData.insurance ? Math.max(basePrice * 0.02, 500.00) : 0; // 2% of cost or min ₹500
       
       const totalPrice = basePrice + fuelSurcharge + regulatoryFee + insuranceCost;
 
@@ -154,12 +153,11 @@ export default function QuoteCalculator() {
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 font-display mb-3">
                   Shipping Method
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
-                    { id: "road", label: "Road convoy", icon: <Truck className="w-4 h-4" /> },
-                    { id: "air", label: "Sub-orbital", icon: <Plane className="w-4 h-4" /> },
-                    { id: "ocean", label: "Sea fleet", icon: <Ship className="w-4 h-4" /> },
-                    { id: "drone", label: "VTOL drone", icon: <Navigation className="w-4 h-4" /> }
+                    { id: "road", label: "Road transport", icon: <Truck className="w-4 h-4" /> },
+                    { id: "air", label: "Air shipping", icon: <Plane className="w-4 h-4" /> },
+                    { id: "ocean", label: "Sea cargo", icon: <Ship className="w-4 h-4" /> }
                   ].map((mode) => (
                     <label
                       key={mode.id}
@@ -259,7 +257,7 @@ export default function QuoteCalculator() {
                   className="w-4.5 h-4.5 text-primary border-slate-300 rounded focus:ring-primary cursor-pointer"
                 />
                 <label htmlFor="insurance" className="ml-2.5 text-sm font-semibold text-slate-600 select-none cursor-pointer">
-                  Add cargo insurance coverage (up to $10,000) (+2% or min $25)
+                  Add cargo insurance coverage (up to ₹5,00,000) (+2% or min ₹500)
                 </label>
               </div>
 
@@ -331,19 +329,19 @@ export default function QuoteCalculator() {
 
                       <div className="flex justify-between items-center text-slate-500">
                         <span>Base Shipping Rate</span>
-                        <span className="font-display font-medium text-dark">${quoteResult.baseRate}</span>
+                        <span className="font-display font-medium text-dark">₹{quoteResult.baseRate}</span>
                       </div>
                       <div className="flex justify-between items-center text-slate-500">
                         <span>Fuel Surcharge (8%)</span>
-                        <span className="font-display font-medium text-dark">${quoteResult.fuel}</span>
+                        <span className="font-display font-medium text-dark">₹{quoteResult.fuel}</span>
                       </div>
                       <div className="flex justify-between items-center text-slate-500">
                         <span>Customs & Handling Fee</span>
-                        <span className="font-display font-medium text-dark">${quoteResult.fees}</span>
+                        <span className="font-display font-medium text-dark">₹{quoteResult.fees}</span>
                       </div>
                       <div className="flex justify-between items-center text-slate-500">
                         <span>Insurance Premium</span>
-                        <span className="font-display font-medium text-dark">${quoteResult.insurance}</span>
+                        <span className="font-display font-medium text-dark">₹{quoteResult.insurance}</span>
                       </div>
 
                       <div className="border-t border-slate-100 my-4"></div>
@@ -359,7 +357,7 @@ export default function QuoteCalculator() {
                     {/* Glowing price display */}
                     <div className="p-6 rounded-2xl bg-blue-50/50 border border-blue-100 flex items-center justify-between mb-6">
                       <span className="text-xs font-black uppercase tracking-wider text-slate-400 font-display">Estimated Total</span>
-                      <span className="text-3xl font-black text-primary font-display">${quoteResult.total}</span>
+                      <span className="text-3xl font-black text-primary font-display">₹{quoteResult.total}</span>
                     </div>
 
                     <button

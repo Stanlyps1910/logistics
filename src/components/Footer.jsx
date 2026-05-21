@@ -55,7 +55,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Propelling global commerce forward with next-generation autonomous scheduling, hyper-optimized route mapping, and temperature-controlled logistics.
+              Propelling global commerce forward with reliable scheduling, optimized route mapping, and temperature-controlled logistics.
             </p>
             
             {/* Contact Details */}
@@ -108,12 +108,12 @@ export default function Footer() {
               Core Operations
             </h3>
             <ul className="space-y-3 text-sm text-slate-400">
-              <li>Autonomous Road Freight</li>
-              <li>Express Air Delivery</li>
-              <li>Smart Maritime Freight</li>
-              <li>Robotic Warehousing</li>
-              <li>Drones Last-Mile Delivery</li>
-              <li>Biotech Cold Chain</li>
+              <li>Road Transport</li>
+              <li>Fast Air Shipping</li>
+              <li>Sea Cargo</li>
+              <li>Automated Storage & Packing</li>
+              <li>Local Courier & Delivery</li>
+              <li>Temperature-Controlled Shipping</li>
             </ul>
           </div>
 
@@ -121,7 +121,7 @@ export default function Footer() {
           <div className="space-y-6">
             <div>
               <h3 className="text-base font-bold uppercase tracking-wider font-display text-white mb-4 border-l-2 border-secondary pl-3">
-                Telemetry Updates
+                Stay Updated
               </h3>
               <p className="text-slate-400 text-xs mb-3">
                 Subscribe for network upgrades and supply chain insights.
@@ -129,7 +129,7 @@ export default function Footer() {
               <form onSubmit={(e) => e.preventDefault()} className="flex">
                 <input
                   type="email"
-                  placeholder="Enter secure email"
+                  placeholder="Enter your email"
                   className="w-full px-3 py-2 text-sm bg-slate-900 border border-blue-900 rounded-l-md text-white focus:outline-none focus:border-secondary"
                   required
                 />
@@ -168,7 +168,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 space-y-4 sm:space-y-0">
           <div>
-            &copy; {currentYear} NexaFreight Logistics Inc. All operations secured.
+            &copy; {currentYear} NexaFreight Logistics Inc. All rights reserved.
           </div>
           
           {/* Social Icons */}

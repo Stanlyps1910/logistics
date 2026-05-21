@@ -13,18 +13,18 @@ const mockDatabase = {
     id: "NX-4820-T1",
     status: "Delivered",
     step: 5,
-    origin: "Tokyo Hub (NRT-1)",
-    destination: "Bengaluru Corporate Portal (BLR-4)",
+    origin: "Mumbai Terminal (BOM-1)",
+    destination: "Bengaluru Corporate Hub (BLR-4)",
     eta: "Delivered on May 19, 2026",
-    carrier: "NexaAir Autonomous Flight 802",
+    carrier: "NexaAir Cargo Flight 802",
     weight: "14.5 kg",
     dimensions: "40 x 30 x 25 cm",
     history: [
-      { step: 1, label: "Picked Up", date: "May 17, 2026 - 08:30 AM", loc: "Tokyo Hub" },
-      { step: 2, label: "In Transit", date: "May 17, 2026 - 11:15 PM", loc: "Indo-Pacific Air Corridor" },
+      { step: 1, label: "Picked Up", date: "May 17, 2026 - 08:30 AM", loc: "Mumbai Terminal" },
+      { step: 2, label: "In Transit", date: "May 17, 2026 - 11:15 PM", loc: "Aviation Route BOM-BLR" },
       { step: 3, label: "Customs Clearance", date: "May 18, 2026 - 09:40 AM", loc: "Kempegowda Intl Airport Customs Gate C" },
-      { step: 4, label: "Out for Delivery", date: "May 19, 2026 - 07:15 AM", loc: "Bengaluru Koramangala Hub Platoon #4" },
-      { step: 5, label: "Delivered", date: "May 19, 2026 - 02:45 PM", loc: "Corporate Portal, Sector 9 (Koramangala)" }
+      { step: 4, label: "Out for Delivery", date: "May 19, 2026 - 07:15 AM", loc: "Bengaluru Koramangala Distribution Hub" },
+      { step: 5, label: "Delivered", date: "May 19, 2026 - 02:45 PM", loc: "Corporate Hub, Sector 9 (Koramangala)" }
     ]
   },
   "NX-1938-C5": {
@@ -34,12 +34,12 @@ const mockDatabase = {
     origin: "Mumbai Port Terminal (BOM-2)",
     destination: "Bengaluru Whitefield Hub (BLR-2)",
     eta: "Estimated: May 22, 2026",
-    carrier: "NexaRoad Autonomous Platoon #40",
+    carrier: "NexaRoad Cargo Truck #40",
     weight: "240.0 kg",
     dimensions: "120 x 80 x 95 cm",
     history: [
       { step: 1, label: "Picked Up", date: "May 15, 2026 - 10:00 AM", loc: "Mumbai Factory Gate A" },
-      { step: 2, label: "In Transit", date: "May 16, 2026 - 04:30 PM", loc: "Mumbai-Bengaluru Autonomous Expressway" },
+      { step: 2, label: "In Transit", date: "May 16, 2026 - 04:30 PM", loc: "National Highway 48" },
       { step: 3, label: "Customs Clearance", date: "May 20, 2026 - 10:15 AM", loc: "Inland Container Depot, Bengaluru" },
       { step: 4, label: "Out for Delivery", date: "Pending", loc: "Bengaluru Hub" },
       { step: 5, label: "Delivered", date: "Pending", loc: "Destination" }
@@ -52,17 +52,88 @@ const mockDatabase = {
     origin: "Bengaluru Kempegowda Hub (BLR-1)",
     destination: "Chennai Cargo Gate (MAA-5)",
     eta: "Estimated: May 21, 2026",
-    carrier: "Autonomous Road Platoon #18",
+    carrier: "NexaRoad Cargo Truck #18",
     weight: "3.2 kg",
     dimensions: "20 x 20 x 15 cm",
     history: [
       { step: 1, label: "Picked Up", date: "May 20, 2026 - 03:00 PM", loc: "Bengaluru Hub Dispatch" },
-      { step: 2, label: "In Transit", date: "Pending", loc: "Bengaluru-Chennai Expressway Corridor" },
+      { step: 2, label: "In Transit", date: "Pending", loc: "National Highway 4" },
       { step: 3, label: "Customs Clearance", date: "Pending", loc: "Chennai Customs Node" },
-      { step: 4, label: "Out for Delivery", date: "Pending", loc: "Chennai Hub Platoon" },
-      { step: 5, label: "Delivered", date: "Pending", loc: "Corporate Portal" }
+      { step: 4, label: "Out for Delivery", date: "Pending", loc: "Chennai Distribution Hub" },
+      { step: 5, label: "Delivered", date: "Pending", loc: "Corporate Office" }
     ]
   }
+};
+
+const getStatusStep = (status) => {
+  switch (status) {
+    case "Pending":
+    case "Picked Up":
+      return 1;
+    case "In Transit":
+      return 2;
+    case "Customs Clearance":
+    case "Customs Cleared":
+      return 3;
+    case "Out for Delivery":
+      return 4;
+    case "Delivered":
+      return 5;
+    default:
+      return 1;
+  }
+};
+
+const buildHistory = (shipment) => {
+  const step = getStatusStep(shipment.status);
+  const createdTime = new Date(shipment.date || shipment.createdAt || Date.now());
+  
+  const formatDate = (dateObj, hourStr) => {
+    return dateObj.toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    }) + ` - ${hourStr}`;
+  };
+
+  const dateStep1 = new Date(createdTime);
+  const dateStep2 = new Date(createdTime.getTime() + 1 * 24 * 60 * 60 * 1000);
+  const dateStep3 = new Date(createdTime.getTime() + 2 * 24 * 60 * 60 * 1000);
+  const dateStep4 = new Date(createdTime.getTime() + 3 * 24 * 60 * 60 * 1000);
+  const dateStep5 = new Date(createdTime.getTime() + 4 * 24 * 60 * 60 * 1000);
+
+  return [
+    {
+      step: 1,
+      label: "Picked Up",
+      date: formatDate(dateStep1, "10:00 AM"),
+      loc: shipment.origin
+    },
+    {
+      step: 2,
+      label: "In Transit",
+      date: step >= 2 ? formatDate(dateStep2, "04:30 PM") : "Pending",
+      loc: step >= 2 ? `Transit Hub En Route to ${shipment.destination}` : "Pending"
+    },
+    {
+      step: 3,
+      label: "Customs Clearance",
+      date: step >= 3 ? formatDate(dateStep3, "11:15 AM") : "Pending",
+      loc: step >= 3 ? `Customs Office, ${shipment.destination}` : "Pending"
+    },
+    {
+      step: 4,
+      label: "Out for Delivery",
+      date: step >= 4 ? formatDate(dateStep4, "09:00 AM") : "Pending",
+      loc: step >= 4 ? `${shipment.destination} Distribution Center` : "Pending"
+    },
+    {
+      step: 5,
+      label: "Delivered",
+      date: step >= 5 ? formatDate(dateStep5, "02:30 PM") : "Pending",
+      loc: step >= 5 ? shipment.destination : "Pending"
+    }
+  ];
 };
 
 export default function Tracker() {
@@ -70,22 +141,59 @@ export default function Tracker() {
   const [activeTracking, setActiveTracking] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     const id = trackingId.trim().toUpperCase();
-    if (mockDatabase[id]) {
-      setActiveTracking(mockDatabase[id]);
-      setErrorMsg("");
-    } else {
-      setErrorMsg(`Tracking ID "${id}" was not recognized in our database. Verify the coordinates.`);
-      setActiveTracking(null);
+    if (!id) return;
+    
+    setErrorMsg("");
+    try {
+      const response = await fetch(`/api/shipments/track/${id}`);
+      if (response.ok) {
+        const shipment = await response.json();
+        const trackingData = {
+          id: shipment.trackingId,
+          status: shipment.status,
+          step: getStatusStep(shipment.status),
+          origin: shipment.origin,
+          destination: shipment.destination,
+          eta: shipment.status === "Delivered" ? `Delivered on ${shipment.eta}` : `Estimated: ${shipment.eta}`,
+          carrier: `Nexa${shipment.freightType.charAt(0).toUpperCase() + shipment.freightType.slice(1)} Cargo`,
+          weight: `${shipment.weight} kg`,
+          dimensions: "Standard Cargo Container",
+          history: buildHistory(shipment)
+        };
+        setActiveTracking(trackingData);
+      } else if (response.status === 404) {
+        if (mockDatabase[id]) {
+          setActiveTracking(mockDatabase[id]);
+        } else {
+          setErrorMsg(`Tracking ID "${id}" was not recognized in our database. Please verify the ID.`);
+          setActiveTracking(null);
+        }
+      } else {
+        setErrorMsg("Failed to connect to the tracking service. Please try again later.");
+        setActiveTracking(null);
+      }
+    } catch (err) {
+      console.error("Tracking lookup failed:", err);
+      if (mockDatabase[id]) {
+        setActiveTracking(mockDatabase[id]);
+      } else {
+        setErrorMsg("Network error: Could not contact server. Please check your connection.");
+        setActiveTracking(null);
+      }
     }
   };
 
   const loadDemo = (id) => {
     setTrackingId(id);
-    setActiveTracking(mockDatabase[id]);
-    setErrorMsg("");
+    if (mockDatabase[id]) {
+      setActiveTracking(mockDatabase[id]);
+      setErrorMsg("");
+    } else {
+      setErrorMsg("");
+    }
   };
 
   const steps = [
@@ -167,9 +275,9 @@ export default function Tracker() {
             </p>
             <div className="space-y-3">
               {[
-                { id: "NX-4820-T1", label: "Delivered shipment node", statusColor: "text-green-500" },
-                { id: "NX-1938-C5", label: "In customs clearance queue", statusColor: "text-blue-500" },
-                { id: "NX-9274-P9", label: "Newly registered package node", statusColor: "text-yellow-500" }
+                { id: "NX-4820-T1", label: "Delivered shipment", statusColor: "text-green-500" },
+                { id: "NX-1938-C5", label: "In customs clearance", statusColor: "text-blue-500" },
+                { id: "NX-9274-P9", label: "Newly registered shipment", statusColor: "text-yellow-500" }
               ].map((demo) => (
                 <button
                   key={demo.id}

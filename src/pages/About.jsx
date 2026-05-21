@@ -10,50 +10,50 @@ const pageVariants = {
 const timelineMilestones = [
   {
     year: "2018",
-    title: "Algorithmic Foundation",
-    description: "NexaFreight Logistics is founded in Bengaluru, India's tech hub. Our developers finalize the core neural routing algorithm, laying the basis for automated scheduling."
+    title: "Company Founding",
+    description: "NexaFreight Logistics is founded in Bengaluru, India's tech hub. Our team finalizes the core routing and scheduling software, laying the basis for automated scheduling."
   },
   {
     year: "2020",
-    title: "Autonomous Fleet Launch",
-    description: "Launch of our first 24 self-driving freight trucks in interstate highways. Energy consumption decreases by 22% while cargo punctuality increases to 99.8%."
+    title: "Road Fleet Launch",
+    description: "Launch of our first 24 freight trucks for interstate transport across major Indian highways, boosting delivery speeds and reliability."
   },
   {
     year: "2023",
-    title: "Global Port Integration",
-    description: "Deployment of smart containers and drone delivery networks across 140 countries, enabling end-to-end telemetry mapping and tracking transparency."
+    title: "Port & Hub Integration",
+    description: "Integration of smart tracking systems across major cargo ports and transport hubs, enabling full transit tracking transparency."
   },
   {
     year: "2026",
-    title: "Hypersonic & Space-corridor Delivery",
-    description: "Launch of express hypersonic aerospace flight lanes connecting Bengaluru to London, Tokyo, and Silicon Valley in under 6 hours."
+    title: "Air Cargo Expansion",
+    description: "Expansion of premium air shipping lanes connecting Bengaluru to other major business hubs in India and internationally."
   }
 ];
 
 const leaders = [
   {
-    name: "Dr. Silas Vance",
+    name: "Sanjay Verma",
     role: "Chief Executive Officer",
-    background: "Ex-NASA Systems Architect. PhD in Computer Science from MIT.",
+    background: "Logistics industry veteran with over 25 years of experience leading supply chain operations.",
     tag: "Founder"
   },
   {
-    name: "Lana Thorne",
+    name: "Anjali Sen",
     role: "Chief Operations Officer",
-    background: "20+ years managing cargo shipping operations and port logistics.",
+    background: "20+ years managing cargo shipping operations, warehouse logistics, and port relations.",
     tag: "Operations"
   },
   {
     name: "Vikram Dev",
     role: "Chief Technology Officer",
-    background: "Distributed systems expert. Designed our secure route optimization systems.",
+    background: "Distributed systems expert. Designed our secure route optimization and tracking systems.",
     tag: "Technology"
   },
   {
-    name: "Zara Chen",
+    name: "Zara Khan",
     role: "Chief of Air Freight Operations",
-    background: "Former commercial aviation director, pioneering global air freight lanes.",
-    tag: "Aerospace"
+    background: "Former commercial aviation director, pioneering domestic and international air freight lanes.",
+    tag: "Air Cargo"
   }
 ];
 
@@ -123,10 +123,10 @@ export default function About() {
             </h3>
             <ul className="space-y-3.5">
               {[
-                { label: "Active Logistics Hubs", val: "1,240 nodes" },
-                { label: "Highway Network Coverage", val: "94.8% of highways" },
-                { label: "Delay Incidence Rate", val: "0.002% annually" },
-                { label: "Sustainability Rating", val: "100% Net Zero certified" }
+                { label: "Active Logistics Hubs", val: "120+ Hubs" },
+                { label: "Highway Network Coverage", val: "All Major Highways" },
+                { label: "On-Time Delivery Rate", val: "99.8% Annually" },
+                { label: "Fleet Vehicles", val: "1,000+ Trucks" }
               ].map((item, i) => (
                 <li key={i} className="flex justify-between items-center text-sm font-sans">
                   <span className="text-slate-500 font-medium">{item.label}</span>

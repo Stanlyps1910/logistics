@@ -2,11 +2,6 @@ import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext(null);
 
-const DEMO_ACCOUNTS = {
-  client: { email: "client@nexafreight.com", password: "client123", name: "Arjun Mehta", company: "TechVista Solutions" },
-  admin: { email: "admin@nexafreight.com", password: "admin123", name: "Priya Sharma", role: "Operations Manager" }
-};
-
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     const stored = localStorage.getItem("nexafreight_auth");
@@ -20,41 +15,25 @@ export function AuthProvider({ children }) {
     return null;
   });
 
-  const login = (email, password, role) => {
-    const account = DEMO_ACCOUNTS[role];
-
-    if (account && email.toLowerCase() === account.email && password === account.password) {
-      const userData = {
-        email: account.email,
-        name: account.name,
-        role,
-        company: account.company || "NexaFreight Logistics",
-        loginTime: new Date().toISOString()
-      };
-      setUser(userData);
-      localStorage.setItem("nexafreight_auth", JSON.stringify(userData));
-      return { success: true };
+  const login = async (email, password) => {
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUser(data.user);
+        localStorage.setItem("nexafreight_auth", JSON.stringify(data.user));
+        return { success: true };
+      } else {
+        return { success: false, message: data.message || "Invalid email or password." };
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      return { success: false, message: "Server connection failed. Make sure server is running." };
     }
-
-    const customAccounts = JSON.parse(localStorage.getItem("nexafreight_accounts") || "[]");
-    const customAccount = customAccounts.find(
-      a => a.email === email && a.password === password && a.role === role
-    );
-
-    if (customAccount) {
-      const userData = {
-        email: customAccount.email,
-        name: customAccount.name,
-        role,
-        company: customAccount.company || "NexaFreight Logistics",
-        loginTime: new Date().toISOString()
-      };
-      setUser(userData);
-      localStorage.setItem("nexafreight_auth", JSON.stringify(userData));
-      return { success: true };
-    }
-
-    return { success: false, message: "Invalid email or password." };
   };
 
   const logout = () => {

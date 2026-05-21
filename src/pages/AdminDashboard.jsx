@@ -1,13 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import SidebarLayout from "../components/SidebarLayout";
 import ChatBox from "../components/ChatBox";
 import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell
+} from "recharts";
+import {
   BarChart3, Package, Users, IndianRupee, TrendingUp, TrendingDown,
   MapPin, ChevronDown, Shield, UserCheck, UserX,
   RefreshCw, Plus, X, MessageSquare, Mail, Building2, User,
-  UserPlus, Lock, LayoutDashboard, ArrowRight,
+  UserPlus, Lock, LayoutDashboard, ArrowRight, Phone
 } from "lucide-react";
 
 const pageVariants = {
@@ -26,10 +30,20 @@ const statusColors = {
   Delivered: "bg-emerald-100 text-emerald-700 border border-emerald-300",
 };
 
+const STATUS_COLORS_HEX = {
+  "Picked Up": "#f59e0b",
+  "In Transit": "#3b82f6",
+  "Customs Clearance": "#a855f7",
+  "Out for Delivery": "#06b6d4",
+  "Delivered": "#10b981",
+  "Pending": "#64748b"
+};
+
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "shipments", label: "Shipments", icon: Package },
   { id: "clients", label: "Clients", icon: Users },
+  { id: "quotes", label: "Quotes / Inquiries", icon: Mail },
   { id: "chat", label: "Support Chat", icon: MessageSquare },
 ];
 
@@ -38,243 +52,201 @@ const formatCurrency = (val) => new Intl.NumberFormat("en-IN", { style: "currenc
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const [activeNav, setActiveNav] = useState("dashboard");
-  const [shipments, setShipments] = useState(() => {
-    try {
-      const s = localStorage.getItem("nexafreight_shipments");
-      return s ? JSON.parse(s) : [];
-    } catch { return []; }
-  });
-  const [clients, setClients] = useState(() => {
-    try {
-      const c = localStorage.getItem("nexafreight_clients");
-      return c ? JSON.parse(c) : [];
-    } catch { return []; }
-  });
-  const canvasRef = useRef(null);
-  const chartContainerRef = useRef(null);
+  const [shipments, setShipments] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [quotes, setQuotes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Modals state
   const [showAddShipment, setShowAddShipment] = useState(false);
   const [showAddClient, setShowAddClient] = useState(false);
+
+  // Forms state
   const [shipmentForm, setShipmentForm] = useState({
-    clientEmail: "", origin: "", destination: "", weight: "", freightType: "road", specialInstructions: ""
+    clientEmail: "", origin: "", destination: "", weight: "", freightType: "road", specialInstructions: "", cost: ""
   });
   const [clientForm, setClientForm] = useState({
-    name: "", email: "", password: "", company: ""
+    name: "", email: "", password: "", company: "", whatsapp: ""
   });
 
-  const loadData = () => {
+  // Conversion reference
+  const [convertingQuote, setConvertingQuote] = useState(null);
+
+  const fetchData = async (silent = false) => {
     try {
-      const s = localStorage.getItem("nexafreight_shipments");
-      setShipments(s ? JSON.parse(s) : []);
-    } catch { setShipments([]); }
-    try {
-      const c = localStorage.getItem("nexafreight_clients");
-      setClients(c ? JSON.parse(c) : []);
-    } catch { setClients([]); }
+      if (!silent) {
+        Promise.resolve().then(() => setIsLoading(true));
+      }
+      const [shipmentsRes, clientsRes, quotesRes] = await Promise.all([
+        fetch("/api/shipments").then(res => res.json()),
+        fetch("/api/clients").then(res => res.json()),
+        fetch("/api/quotes").then(res => res.json())
+      ]);
+      setShipments(Array.isArray(shipmentsRes) ? shipmentsRes : []);
+      setClients(Array.isArray(clientsRes) ? clientsRes : []);
+      setQuotes(Array.isArray(quotesRes) ? quotesRes : []);
+    } catch (error) {
+      console.error("Error loading dashboard data:", error);
+    } finally {
+      if (!silent) {
+        Promise.resolve().then(() => setIsLoading(false));
+      }
+    }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchData();
+  }, []);
 
   const totalShipments = shipments.length;
   const totalRevenue = shipments.reduce((sum, s) => sum + (s.cost || 0), 0);
   const activeRoutes = shipments.filter((s) => s.status !== "Delivered").length;
   const registeredClients = clients.length;
-  const [dateRefs] = useState(() => {
-    const now = Date.now();
-    return {
-      weekAgo: new Date(now - 7 * 86400000),
-      monthAgo: new Date(now - 30 * 86400000),
-    };
-  });
-  const { weekAgo, monthAgo } = dateRefs;
 
-  const handleStatusChange = (index, newStatus) => {
-    const updated = shipments.map((s, i) => i === index ? { ...s, status: newStatus } : s);
-    setShipments(updated);
-    localStorage.setItem("nexafreight_shipments", JSON.stringify(updated));
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7 * 86400000);
+  const monthAgo = new Date(now.getTime() - 30 * 86400000);
+
+  // Status handlers
+  const handleStatusChange = async (shipmentId, newStatus) => {
+    const originalShipments = shipments;
+    setShipments(prev => prev.map(s => s._id === shipmentId ? { ...s, status: newStatus } : s));
+
+    try {
+      const res = await fetch(`/api/shipments/${shipmentId}/status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        alert(data.message || "Failed to update shipment status");
+        setShipments(originalShipments);
+      }
+    } catch (error) {
+      console.error("Error updating shipment status:", error);
+      alert("Failed to connect to the server to update status.");
+      setShipments(originalShipments);
+    }
   };
 
-  const handleClientToggle = (index) => {
-    const updated = clients.map((c, i) =>
-      i === index ? { ...c, status: c.status === "Active" ? "Suspended" : "Active" } : c
-    );
-    setClients(updated);
-    localStorage.setItem("nexafreight_clients", JSON.stringify(updated));
+  const handleClientToggle = async (clientId) => {
+    const targetClient = clients.find(c => c._id === clientId);
+    if (!targetClient) return;
+
+    const originalClients = clients;
+    const nextStatus = targetClient.status === "Active" ? "Suspended" : "Active";
+    setClients(prev => prev.map(c => c._id === clientId ? { ...c, status: nextStatus } : c));
+
+    try {
+      const res = await fetch(`/api/clients/${clientId}/toggle`, {
+        method: "PUT"
+      });
+      const data = await res.json();
+      if (data.success) {
+        setClients(prev => prev.map(c => c._id === clientId ? { ...c, status: data.client.status } : c));
+      } else {
+        alert(data.message || "Failed to toggle client status");
+        setClients(originalClients);
+      }
+    } catch (error) {
+      console.error("Error toggling client status:", error);
+      alert("Failed to connect to the server to toggle status.");
+      setClients(originalClients);
+    }
   };
 
-  const revenueByMonth = (() => {
-    const monthMap = {};
-    shipments.forEach(s => {
-      const d = new Date(s.date || s.createdAt);
-      if (isNaN(d.getTime())) return;
-      const key = d.getMonth();
-      monthMap[key] = (monthMap[key] || 0) + (s.cost || 0);
-    });
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
-    return { data: months.map((_, i) => monthMap[i] || 0), labels: months };
+  // Recharts Monthly Revenue Trend (Dynamic last 6 months)
+  const chartData = (() => {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const data = [];
+    const today = new Date();
+    
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const m = d.getMonth();
+      const y = d.getFullYear();
+      
+      const monthlyRevenue = shipments
+        .filter(s => {
+          const sd = new Date(s.date || s.createdAt);
+          return sd.getMonth() === m && sd.getFullYear() === y;
+        })
+        .reduce((sum, s) => sum + (s.cost || 0), 0);
+        
+      data.push({
+        name: monthNames[m],
+        revenue: monthlyRevenue
+      });
+    }
+    return data;
   })();
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const container = chartContainerRef.current;
-    if (!canvas || !container) return;
-
-    const draw = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const width = container.clientWidth;
-      const height = 280;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = width + "px";
-      canvas.style.height = height + "px";
-
-      const ctx = canvas.getContext("2d");
-      ctx.scale(dpr, dpr);
-      ctx.clearRect(0, 0, width, height);
-
-      const padding = { top: 30, right: 20, bottom: 40, left: width < 400 ? 35 : 50 };
-      const chartW = width - padding.left - padding.right;
-      const chartH = height - padding.top - padding.bottom;
-      const maxVal = Math.max(...revenueByMonth.data, 1) * 1.15;
-      const barCount = revenueByMonth.data.length;
-      const barGap = chartW * 0.12 / barCount;
-      const barWidth = (chartW - barGap * (barCount + 1)) / barCount;
-
-      ctx.strokeStyle = "rgba(148, 163, 184, 0.15)";
-      ctx.lineWidth = 1;
-      ctx.font = width < 400 ? "8px 'Plus Jakarta Sans', sans-serif" : "10px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillStyle = "#94a3b8";
-      ctx.textAlign = "right";
-
-      for (let i = 0; i <= 4; i++) {
-        const y = padding.top + (chartH / 4) * i;
-        const val = Math.round(maxVal - (maxVal / 4) * i);
-        ctx.beginPath();
-        ctx.setLineDash([3, 3]);
-        ctx.moveTo(padding.left, y);
-        ctx.lineTo(width - padding.right, y);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillText("₹" + (val / 1000).toFixed(0) + "k", padding.left - 4, y + 3);
-      }
-
-      const hasData = revenueByMonth.data.some(v => v > 0);
-
-      revenueByMonth.data.forEach((val, i) => {
-        const x = padding.left + barGap + i * (barWidth + barGap);
-        const barH = (val / maxVal) * chartH;
-        const y = padding.top + chartH - barH;
-        const radius = 4;
-        const gradient = ctx.createLinearGradient(x, y, x, y + barH);
-        gradient.addColorStop(0, "#0047cc");
-        gradient.addColorStop(1, "#00b4d8");
-
-        ctx.beginPath();
-        ctx.moveTo(x, y + barH);
-        ctx.lineTo(x, y + radius);
-        ctx.quadraticCurveTo(x, y, x + radius, y);
-        ctx.lineTo(x + barWidth - radius, y);
-        ctx.quadraticCurveTo(x + barWidth, y, x + barWidth, y + radius);
-        ctx.lineTo(x + barWidth, y + barH);
-        ctx.closePath();
-        ctx.fillStyle = gradient;
-        ctx.fill();
-
-        ctx.fillStyle = "#0a1628";
-        ctx.font = "bold 9px 'Space Grotesk', sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText(val > 0 ? "₹" + (val / 1000).toFixed(0) + "k" : "", x + barWidth / 2, y - 6);
-
-        ctx.fillStyle = "#64748b";
-        ctx.font = width < 400 ? "9px 'Plus Jakarta Sans', sans-serif" : "11px 'Plus Jakarta Sans', sans-serif";
-        ctx.fillText(revenueByMonth.labels[i], x + barWidth / 2, padding.top + chartH + 20);
-      });
-
-      if (!hasData) {
-        ctx.fillStyle = "#94a3b8";
-        ctx.font = "12px 'Plus Jakarta Sans', sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("Add shipments to see revenue chart", width / 2, height / 2);
-      }
-
-      ctx.strokeStyle = "rgba(148, 163, 184, 0.3)";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(padding.left, padding.top + chartH);
-      ctx.lineTo(width - padding.right, padding.top + chartH);
-      ctx.stroke();
-    };
-
-    draw();
-    const ro = new ResizeObserver(() => draw());
-    ro.observe(container);
-    return () => ro.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shipments]);
+  // Recharts Pie Chart Shipment Status
+  const statusChartData = (() => {
+    const counts = {};
+    shipments.forEach(s => {
+      counts[s.status] = (counts[s.status] || 0) + 1;
+    });
+    return Object.keys(counts).map(status => ({
+      name: status,
+      value: counts[status]
+    }));
+  })();
 
   const handleShipmentFormChange = (e) => {
     const { name, value } = e.target;
     setShipmentForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleAddShipment = (e) => {
+  const handleAddShipmentSubmit = async (e) => {
     e.preventDefault();
     if (!shipmentForm.clientEmail || !shipmentForm.origin || !shipmentForm.destination || !shipmentForm.weight) return;
-    const weight = parseFloat(shipmentForm.weight);
-    if (isNaN(weight) || weight <= 0) return;
-
-    const clientData = clients.find(c => c.email === shipmentForm.clientEmail);
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const trackingId = "NX-" +
-      Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("") + "-" +
-      Array.from({ length: 2 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
-
-    const baseCost = weight * ({ road: 12, air: 38, ocean: 8 }[shipmentForm.freightType] || 12);
-    const cost = Math.round(baseCost * 100 + Math.random() * 2000 + 500);
-
-    const newShipment = {
-      id: trackingId, trackingId,
-      clientEmail: shipmentForm.clientEmail,
-      clientName: clientData?.name || "Unknown",
-      origin: shipmentForm.origin, destination: shipmentForm.destination,
-      weight: weight + " kg", freightType: shipmentForm.freightType,
-      specialInstructions: shipmentForm.specialInstructions || "None",
-      status: "Picked Up", cost,
-      date: new Date().toISOString().split("T")[0],
-      eta: new Date(Date.now() + 5 * 86400000).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }),
-      createdAt: new Date().toISOString(),
-    };
 
     try {
-      const allShipments = JSON.parse(localStorage.getItem("nexafreight_shipments") || "[]");
-      allShipments.unshift(newShipment);
-      localStorage.setItem("nexafreight_shipments", JSON.stringify(allShipments));
-    } catch (e) {
-      console.error("Failed to save shipment:", e);
-      return;
-    }
-
-    try {
-      if (clientData) {
-        const allClients = JSON.parse(localStorage.getItem("nexafreight_clients") || "[]");
-        localStorage.setItem("nexafreight_clients", JSON.stringify(
-          allClients.map(c => c.email === shipmentForm.clientEmail ? { ...c, shipments: (c.shipments || 0) + 1 } : c)
-        ));
+      let res;
+      if (convertingQuote) {
+        res = await fetch(`/api/quotes/${convertingQuote._id}/convert`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            origin: shipmentForm.origin,
+            destination: shipmentForm.destination,
+            weight: shipmentForm.weight,
+            freightType: shipmentForm.freightType,
+            specialInstructions: shipmentForm.specialInstructions,
+            cost: shipmentForm.cost || undefined
+          })
+        });
+      } else {
+        res = await fetch("/api/shipments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientEmail: shipmentForm.clientEmail,
+            origin: shipmentForm.origin,
+            destination: shipmentForm.destination,
+            weight: shipmentForm.weight,
+            freightType: shipmentForm.freightType,
+            specialInstructions: shipmentForm.specialInstructions,
+            cost: shipmentForm.cost || undefined
+          })
+        });
       }
-    } catch (e) {
-      console.error("Failed to update client:", e);
-    }
 
-    try {
-      const allActivity = JSON.parse(localStorage.getItem("nexafreight_activity") || "[]");
-      allActivity.unshift({
-        action: `Shipment ${trackingId} created for ${clientData?.name || "Unknown"}`, time: new Date().toISOString(), type: "booking"
-      });
-      localStorage.setItem("nexafreight_activity", JSON.stringify(allActivity));
-    } catch (e) {
-      console.error("Failed to log activity:", e);
+      const data = await res.json();
+      if (data.success) {
+        setShipmentForm({ clientEmail: "", origin: "", destination: "", weight: "", freightType: "road", specialInstructions: "", cost: "" });
+        setConvertingQuote(null);
+        setShowAddShipment(false);
+        fetchData(true);
+      } else {
+        alert(data.message || "Failed to create shipment");
+      }
+    } catch (err) {
+      console.error("Add/Convert shipment error:", err);
     }
-
-    setShipmentForm({ clientEmail: "", origin: "", destination: "", weight: "", freightType: "road", specialInstructions: "" });
-    setShowAddShipment(false);
-    loadData();
   };
 
   const handleClientFormChange = (e) => {
@@ -282,47 +254,54 @@ export default function AdminDashboard() {
     setClientForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleAddClient = (e) => {
+  const handleAddClientSubmit = async (e) => {
     e.preventDefault();
-    if (!clientForm.name || !clientForm.email || !clientForm.password) return;
+    if (!clientForm.name || !clientForm.email || !clientForm.password || !clientForm.whatsapp) return;
 
-    try {
-      const allClients = JSON.parse(localStorage.getItem("nexafreight_clients") || "[]");
-      allClients.unshift({
-        name: clientForm.name, email: clientForm.email, company: clientForm.company || "N/A",
-        shipments: 0, status: "Active", joined: new Date().toISOString().split("T")[0],
-      });
-      localStorage.setItem("nexafreight_clients", JSON.stringify(allClients));
-    } catch (e) {
-      console.error("Failed to save client:", e);
+    // Validate WhatsApp Country Code format starts with +
+    if (!clientForm.whatsapp.startsWith("+")) {
+      alert("WhatsApp number must start with a country code (e.g., +919876543210)");
       return;
     }
 
     try {
-      const accounts = JSON.parse(localStorage.getItem("nexafreight_accounts") || "[]");
-      accounts.push({ name: clientForm.name, email: clientForm.email, password: clientForm.password, company: clientForm.company || "N/A", role: "client" });
-      localStorage.setItem("nexafreight_accounts", JSON.stringify(accounts));
-    } catch (e) {
-      console.error("Failed to save account:", e);
+      const res = await fetch("/api/clients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(clientForm)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setClientForm({ name: "", email: "", password: "", company: "", whatsapp: "" });
+        setShowAddClient(false);
+        fetchData(true);
+      } else {
+        alert(data.message || "Failed to register client");
+      }
+    } catch (err) {
+      console.error("Add client error:", err);
     }
+  };
 
-    try {
-      const allActivity = JSON.parse(localStorage.getItem("nexafreight_activity") || "[]");
-      allActivity.unshift({ action: `New client ${clientForm.name} registered`, time: new Date().toISOString(), type: "client" });
-      localStorage.setItem("nexafreight_activity", JSON.stringify(allActivity));
-    } catch (e) {
-      console.error("Failed to log activity:", e);
-    }
-
-    setClientForm({ name: "", email: "", password: "", company: "" });
-    setShowAddClient(false);
-    loadData();
+  // Convert Quote Initiator
+  const startQuoteConversion = (quote) => {
+    setConvertingQuote(quote);
+    setShipmentForm({
+      clientEmail: quote.email,
+      origin: "",
+      destination: "",
+      weight: "",
+      freightType: "road",
+      specialInstructions: `Quote inquiry conversion: "${quote.subject}"`,
+      cost: ""
+    });
+    setShowAddShipment(true);
   };
 
   const kpiCards = [
     {
       icon: Package, value: totalShipments, label: "Total Shipments",
-      trend: shipments.filter(s => s.date && new Date(s.date) >= weekAgo).length + " this week",
+      trend: shipments.filter(s => s.createdAt && new Date(s.createdAt) >= weekAgo).length + " this week",
       trendUp: true, color: "text-primary", bg: "bg-blue-50",
     },
     {
@@ -336,7 +315,7 @@ export default function AdminDashboard() {
     },
     {
       icon: Users, value: registeredClients, label: "Registered Clients",
-      trend: clients.filter(c => new Date(c.joined) >= monthAgo).length + " this month",
+      trend: clients.filter(c => c.createdAt && new Date(c.createdAt) >= monthAgo).length + " this month",
       trendUp: true, color: "text-violet-600", bg: "bg-violet-50",
     },
   ];
@@ -378,19 +357,94 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      <div className="glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden">
-        <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-slate-100">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0"><BarChart3 className="w-5 h-5 text-emerald-600" /></div>
-            <div><h2 className="text-sm font-bold font-display uppercase tracking-wide text-dark">Revenue Overview</h2></div>
+      {/* Visual Recharts Overview */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Revenue Trend Area Chart */}
+        <div className="lg:col-span-2 glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden flex flex-col p-4 sm:p-5">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                <BarChart3 className="w-5 h-5 text-emerald-600" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold font-display uppercase tracking-wide text-dark">Revenue Trend (Last 6 Months)</h2>
+              </div>
+            </div>
+            {totalRevenue > 0 && (
+              <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-50 text-xs font-bold text-emerald-600 font-display">
+                <IndianRupee className="w-3 h-3" /> {formatCurrency(totalRevenue)}
+              </span>
+            )}
           </div>
-          {totalRevenue > 0 && (
-            <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-50 text-xs font-bold text-emerald-600 font-display">
-              <IndianRupee className="w-3 h-3" /> {formatCurrency(totalRevenue)}
-            </span>
-          )}
+          <div className="h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#0047cc" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="#00b4d8" stopOpacity={0.0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `₹${v/1000}k`} />
+                <Tooltip 
+                  formatter={(value) => [formatCurrency(value), "Revenue"]} 
+                  contentStyle={{ backgroundColor: "#ffffff", borderRadius: "8px", border: "1px solid #e2e8f0", fontFamily: "sans-serif" }}
+                />
+                <Area type="monotone" dataKey="revenue" stroke="#0047cc" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRevenue)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-        <div ref={chartContainerRef} className="px-3 sm:px-4 py-4"><canvas ref={canvasRef} className="w-full" /></div>
+
+        {/* Shipment Status Pie Chart */}
+        <div className="lg:col-span-1 glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden flex flex-col p-4 sm:p-5">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <Package className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold font-display uppercase tracking-wide text-dark">Shipment Status</h2>
+              </div>
+            </div>
+          </div>
+          <div className="h-56 w-full flex items-center justify-center">
+            {statusChartData.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={statusChartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={75}
+                    paddingAngle={3}
+                    dataKey="value"
+                  >
+                    {statusChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={STATUS_COLORS_HEX[entry.name] || "#64748b"} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: "#ffffff", borderRadius: "8px", border: "1px solid #e2e8f0", fontFamily: "sans-serif" }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="text-slate-400 text-xs font-medium">No shipments logged yet</div>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-2 mt-4 px-2">
+            {statusChartData.map((entry) => (
+              <div key={entry.name} className="flex items-center gap-1.5 text-xs text-slate-600">
+                <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: STATUS_COLORS_HEX[entry.name] || "#64748b" }} />
+                <span className="truncate">{entry.name}: <strong>{entry.value}</strong></span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </motion.div>
   );
@@ -402,9 +456,9 @@ export default function AdminDashboard() {
           <h1 className="text-xl sm:text-2xl font-black text-dark tracking-tight font-display uppercase">Shipment Management</h1>
           <p className="text-slate-500 text-sm font-sans">{totalShipments} total shipments</p>
         </div>
-        <button onClick={() => setShowAddShipment(true)}
+        <button onClick={() => { setConvertingQuote(null); setShowAddShipment(true); }}
           className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary text-white text-xs font-bold font-display uppercase tracking-wide hover:bg-primary/90 transition-all cursor-pointer shadow-sm w-full sm:w-auto">
-          <Plus className="w-3.5 h-3.5" /> Add Shipment
+          <Plus className="w-3.5 h-3.5" /> Book Shipment
         </button>
       </div>
 
@@ -422,15 +476,15 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {shipments.map((s, i) => (
-                <tr key={s.id} className="hover:bg-blue-50/30 transition-colors">
-                  <td className="px-5 py-3.5"><span className="font-bold font-display text-primary text-xs">{s.id}</span></td>
+              {shipments.map((s) => (
+                <tr key={s._id} className="hover:bg-blue-50/30 transition-colors">
+                  <td className="px-5 py-3.5"><span className="font-bold font-display text-primary text-xs">{s.trackingId}</span></td>
                   <td className="px-5 py-3.5 text-dark font-medium">{s.clientName}</td>
                   <td className="px-5 py-3.5 text-slate-500 text-xs">{s.origin}</td>
                   <td className="px-5 py-3.5 text-slate-500 text-xs">{s.destination}</td>
                   <td className="px-5 py-3.5">
                     <div className="relative">
-                      <select value={s.status} onChange={e => handleStatusChange(i, e.target.value)}
+                      <select value={s.status} onChange={e => handleStatusChange(s._id, e.target.value)}
                         className={`appearance-none cursor-pointer text-xs font-bold px-2.5 py-1 pr-6 rounded-lg border ${statusColors[s.status] || "bg-slate-100 text-slate-600 border-slate-300"} focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all`}>
                         {STATUS_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
                       </select>
@@ -441,19 +495,19 @@ export default function AdminDashboard() {
                 </tr>
               ))}
               {shipments.length === 0 && (
-                <tr><td colSpan={6} className="px-5 py-16 text-center"><Package className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No shipments yet</p><p className="text-slate-400 text-xs mt-1">Click "Add Shipment" to create one.</p></td></tr>
+                <tr><td colSpan={6} className="px-5 py-16 text-center"><Package className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No shipments yet</p><p className="text-slate-400 text-xs mt-1">Click "Book Shipment" to create one.</p></td></tr>
               )}
             </tbody>
           </table>
         </div>
 
         <div className="md:hidden divide-y divide-slate-100">
-          {shipments.map((s, i) => (
-            <div key={s.id} className="px-4 py-3">
+          {shipments.map((s) => (
+            <div key={s._id} className="px-4 py-3">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold font-display text-primary text-xs">{s.id}</span>
+                <span className="font-bold font-display text-primary text-xs">{s.trackingId}</span>
                 <div className="relative">
-                  <select value={s.status} onChange={e => handleStatusChange(i, e.target.value)}
+                  <select value={s.status} onChange={e => handleStatusChange(s._id, e.target.value)}
                     className={`appearance-none cursor-pointer text-[10px] font-bold px-2 py-1 pr-6 rounded-lg border ${statusColors[s.status] || "bg-slate-100 text-slate-600 border-slate-300"} focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all`}>
                     {STATUS_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
                   </select>
@@ -470,7 +524,7 @@ export default function AdminDashboard() {
             </div>
           ))}
           {shipments.length === 0 && (
-            <div className="px-5 py-16 text-center"><Package className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No shipments yet</p><p className="text-slate-400 text-xs mt-1">Click "Add Shipment" to create one.</p></div>
+            <div className="px-5 py-16 text-center"><Package className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No shipments yet</p><p className="text-slate-400 text-xs mt-1">Click "Book Shipment" to create one.</p></div>
           )}
         </div>
       </div>
@@ -486,7 +540,7 @@ export default function AdminDashboard() {
         </div>
         <button onClick={() => setShowAddClient(true)}
           className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-violet-600 text-white text-xs font-bold font-display uppercase tracking-wide hover:bg-violet-700 transition-all cursor-pointer shadow-sm w-full sm:w-auto">
-          <UserPlus className="w-3.5 h-3.5" /> Add Client
+          <UserPlus className="w-3.5 h-3.5" /> Register Client
         </button>
       </div>
 
@@ -497,23 +551,28 @@ export default function AdminDashboard() {
               <tr className="bg-slate-50/80">
                 <th className="text-left px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Name</th>
                 <th className="text-left px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Email</th>
+                <th className="text-left px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">WhatsApp</th>
                 <th className="text-center px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Shipments</th>
                 <th className="text-center px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Status</th>
                 <th className="text-center px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {clients.map((c, i) => (
+              {clients.map((c) => (
                 <tr key={c.email} className={`transition-colors ${c.status === "Suspended" ? "bg-red-50/40" : "hover:bg-blue-50/30"}`}>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-3">
                       <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center font-display font-bold text-primary text-[10px]">
                         {c.name.split(" ").map(n => n[0]).join("")}
                       </div>
-                      <span className="font-semibold text-dark text-sm">{c.name}</span>
+                      <div>
+                        <span className="font-semibold text-dark text-sm block">{c.name}</span>
+                        {c.company && <span className="text-[10px] text-slate-400 block">{c.company}</span>}
+                      </div>
                     </div>
                   </td>
                   <td className="px-5 py-3.5 text-slate-500 text-xs">{c.email}</td>
+                  <td className="px-5 py-3.5 text-slate-500 text-xs">{c.whatsapp}</td>
                   <td className="px-5 py-3.5 text-center font-bold font-display text-dark">{c.shipments || 0}</td>
                   <td className="px-5 py-3.5 text-center">
                     <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${c.status === "Active" ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-600"}`}>
@@ -522,7 +581,7 @@ export default function AdminDashboard() {
                     </span>
                   </td>
                   <td className="px-5 py-3.5 text-center">
-                    <button onClick={() => handleClientToggle(i)}
+                    <button onClick={() => handleClientToggle(c._id)}
                       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold font-display uppercase tracking-wide transition-all cursor-pointer ${c.status === "Active" ? "bg-red-50 border border-red-200/60 text-red-600 hover:bg-red-100" : "bg-emerald-50 border border-emerald-200/60 text-emerald-600 hover:bg-emerald-100"}`}>
                       {c.status === "Active" ? <><UserX className="w-3 h-3" /> Suspend</> : <><UserCheck className="w-3 h-3" /> Activate</>}
                     </button>
@@ -530,14 +589,14 @@ export default function AdminDashboard() {
                 </tr>
               ))}
               {clients.length === 0 && (
-                <tr><td colSpan={5} className="px-5 py-16 text-center"><Users className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No clients registered</p><p className="text-slate-400 text-xs mt-1">Click "Add Client" to register one.</p></td></tr>
+                <tr><td colSpan={6} className="px-5 py-16 text-center"><Users className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No clients registered</p><p className="text-slate-400 text-xs mt-1">Click "Register Client" to register one.</p></td></tr>
               )}
             </tbody>
           </table>
         </div>
 
         <div className="md:hidden divide-y divide-slate-100">
-          {clients.map((c, i) => (
+          {clients.map((c) => (
             <div key={c.email} className={`px-4 py-3 ${c.status === "Suspended" ? "bg-red-50/40" : ""}`}>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
@@ -546,7 +605,7 @@ export default function AdminDashboard() {
                   </div>
                   <div>
                     <p className="font-semibold text-dark text-sm">{c.name}</p>
-                    <p className="text-[10px] text-slate-400">{c.email}</p>
+                    <p className="text-[10px] text-slate-400">{c.email} · {c.whatsapp}</p>
                   </div>
                 </div>
                 <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${c.status === "Active" ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-600"}`}>
@@ -556,7 +615,7 @@ export default function AdminDashboard() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-slate-500">{c.company} · {c.shipments || 0} shipments</span>
-                <button onClick={() => handleClientToggle(i)}
+                <button onClick={() => handleClientToggle(c._id)}
                   className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold font-display uppercase tracking-wide transition-all cursor-pointer ${c.status === "Active" ? "bg-red-50 border border-red-200/60 text-red-600" : "bg-emerald-50 border border-emerald-200/60 text-emerald-600"}`}>
                   {c.status === "Active" ? "Suspend" : "Activate"}
                 </button>
@@ -564,7 +623,95 @@ export default function AdminDashboard() {
             </div>
           ))}
           {clients.length === 0 && (
-            <div className="px-5 py-16 text-center"><Users className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No clients registered</p><p className="text-slate-400 text-xs mt-1">Click "Add Client" to register one.</p></div>
+            <div className="px-5 py-16 text-center"><Users className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No clients registered</p><p className="text-slate-400 text-xs mt-1">Click "Register Client" to register one.</p></div>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  const renderQuotes = () => (
+    <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+      <div className="mb-6">
+        <h1 className="text-xl sm:text-2xl font-black text-dark tracking-tight font-display uppercase">Customer Inquiries & Quotes</h1>
+        <p className="text-slate-500 text-sm font-sans">{quotes.length} total form queries received</p>
+      </div>
+
+      <div className="glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden">
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-sm font-sans">
+            <thead>
+              <tr className="bg-slate-50/80">
+                <th className="text-left px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Sender</th>
+                <th className="text-left px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Contact</th>
+                <th className="text-left px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Subject</th>
+                <th className="text-left px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Message</th>
+                <th className="text-center px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Status</th>
+                <th className="text-center px-5 py-3 text-xs font-bold font-display uppercase tracking-wider text-slate-500">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {quotes.map((q) => (
+                <tr key={q._id} className="hover:bg-blue-50/30 transition-colors">
+                  <td className="px-5 py-3.5">
+                    <span className="font-semibold text-dark text-sm block">{q.name}</span>
+                  </td>
+                  <td className="px-5 py-3.5 text-xs">
+                    <span className="text-slate-600 block">{q.email}</span>
+                    <span className="text-slate-400 block">{q.whatsapp}</span>
+                  </td>
+                  <td className="px-5 py-3.5 font-medium text-xs text-dark">{q.subject}</td>
+                  <td className="px-5 py-3.5 text-xs text-slate-500 max-w-xs truncate" title={q.message}>{q.message}</td>
+                  <td className="px-5 py-3.5 text-center">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${q.status === "Converted" ? "bg-emerald-100 text-emerald-700 border border-emerald-300" : "bg-amber-100 text-amber-700 border border-amber-300"}`}>
+                      {q.status}
+                    </span>
+                  </td>
+                  <td className="px-5 py-3.5 text-center">
+                    {q.status === "Pending" ? (
+                      <button onClick={() => startQuoteConversion(q)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold font-display uppercase tracking-wide bg-primary text-white hover:bg-primary/95 transition-all cursor-pointer shadow-sm">
+                        Convert to Shipment <ArrowRight className="w-3 h-3" />
+                      </button>
+                    ) : (
+                      <span className="text-xs font-bold text-slate-400 font-display uppercase">Converted</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+              {quotes.length === 0 && (
+                <tr><td colSpan={6} className="px-5 py-16 text-center"><Mail className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No inquiries received yet</p></td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="md:hidden divide-y divide-slate-100">
+          {quotes.map((q) => (
+            <div key={q._id} className="px-4 py-3">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-semibold text-dark text-xs">{q.name}</span>
+                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold ${q.status === "Converted" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
+                  {q.status}
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-500 mb-1"><strong>Contact:</strong> {q.email} · {q.whatsapp}</p>
+              <p className="text-[11px] text-slate-700 mb-1"><strong>Subj:</strong> {q.subject}</p>
+              <p className="text-[11px] text-slate-500 mb-3 italic">"{q.message}"</p>
+              <div className="flex justify-end">
+                {q.status === "Pending" ? (
+                  <button onClick={() => startQuoteConversion(q)}
+                    className="w-full text-center inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold font-display uppercase tracking-wide bg-primary text-white hover:bg-primary/95 transition-all shadow-sm">
+                    Convert to Shipment <ArrowRight className="w-3 h-3" />
+                  </button>
+                ) : (
+                  <span className="text-xs font-bold text-slate-400 font-display uppercase">Converted</span>
+                )}
+              </div>
+            </div>
+          ))}
+          {quotes.length === 0 && (
+            <div className="px-5 py-16 text-center"><Mail className="w-10 h-10 text-slate-300 mx-auto mb-3" /><p className="text-slate-400 text-sm font-medium">No inquiries received yet</p></div>
           )}
         </div>
       </div>
@@ -592,11 +739,22 @@ export default function AdminDashboard() {
       onLogout={logout}
       variant="light"
     >
-      {activeNav === "dashboard" && renderDashboard()}
-      {activeNav === "shipments" && renderShipments()}
-      {activeNav === "clients" && renderClients()}
-      {activeNav === "chat" && renderChat()}
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center py-20">
+          <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4" />
+          <p className="text-sm font-medium text-slate-500 font-sans">Loading data from NexaFreight API...</p>
+        </div>
+      ) : (
+        <>
+          {activeNav === "dashboard" && renderDashboard()}
+          {activeNav === "shipments" && renderShipments()}
+          {activeNav === "clients" && renderClients()}
+          {activeNav === "quotes" && renderQuotes()}
+          {activeNav === "chat" && renderChat()}
+        </>
+      )}
 
+      {/* Shipment Modal (Manual booking OR conversion) */}
       <AnimatePresence>
         {showAddShipment && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -610,21 +768,36 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center"><Package className="w-5 h-5 text-primary" /></div>
-                  <h3 className="text-lg font-bold font-display text-dark">Add New Shipment</h3>
+                  <h3 className="text-lg font-bold font-display text-dark">
+                    {convertingQuote ? "Convert Quote to Shipment" : "Book New Shipment"}
+                  </h3>
                 </div>
                 <button onClick={() => setShowAddShipment(false)} className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer">
                   <X className="w-5 h-5 text-slate-400" />
                 </button>
               </div>
-              <form onSubmit={handleAddShipment} className="p-5 space-y-4">
+              <form onSubmit={handleAddShipmentSubmit} className="p-5 space-y-4">
+                {convertingQuote && (
+                  <div className="bg-amber-50 border border-amber-200/50 rounded-xl p-3.5 text-xs text-amber-800">
+                    <p className="font-bold mb-1">Converting Quote from {convertingQuote.name}</p>
+                    <p className="font-mono">Email: {convertingQuote.email} | WhatsApp: {convertingQuote.whatsapp}</p>
+                  </div>
+                )}
+                
                 <div className="space-y-1">
-                  <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Client <span className="text-red-400">*</span></label>
-                  <select name="clientEmail" value={shipmentForm.clientEmail} onChange={handleShipmentFormChange} required
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all appearance-none cursor-pointer">
-                    <option value="">Select a client</option>
-                    {clients.map(c => <option key={c.email} value={c.email}>{c.name} ({c.email})</option>)}
-                  </select>
+                  <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Client Email <span className="text-red-400">*</span></label>
+                  {convertingQuote ? (
+                    <input type="email" name="clientEmail" value={shipmentForm.clientEmail} readOnly
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-sm focus:outline-none cursor-not-allowed" />
+                  ) : (
+                    <select name="clientEmail" value={shipmentForm.clientEmail} onChange={handleShipmentFormChange} required
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all appearance-none cursor-pointer">
+                      <option value="">Select a client</option>
+                      {clients.map(c => <option key={c.email} value={c.email}>{c.name} ({c.email})</option>)}
+                    </select>
+                  )}
                 </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Origin <span className="text-red-400">*</span></label>
@@ -637,6 +810,7 @@ export default function AdminDashboard() {
                       className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all" />
                   </div>
                 </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Weight (kg) <span className="text-red-400">*</span></label>
@@ -651,14 +825,24 @@ export default function AdminDashboard() {
                     </select>
                   </div>
                 </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1 sm:col-span-2">
+                    <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Custom Cost (INR) <span className="text-[10px] text-slate-400 font-normal">(Leave blank to auto-calculate)</span></label>
+                    <input type="number" name="cost" value={shipmentForm.cost} onChange={handleShipmentFormChange} placeholder="Auto-calculated if blank"
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all" />
+                  </div>
+                </div>
+
                 <div className="space-y-1">
                   <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Special Instructions</label>
                   <textarea name="specialInstructions" value={shipmentForm.specialInstructions} onChange={handleShipmentFormChange} placeholder="Any special handling..." rows={2}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all resize-none" />
+                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all resize-none font-sans" />
                 </div>
+
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
                   <button type="submit" className="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-bold font-display uppercase tracking-wide hover:bg-primary/90 transition-all shadow-sm cursor-pointer">
-                    <Plus className="w-4 h-4 inline mr-1.5" /> Create Shipment
+                    {convertingQuote ? "Convert & Book" : "Create Shipment"}
                   </button>
                   <button type="button" onClick={() => setShowAddShipment(false)} className="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition-all cursor-pointer">Cancel</button>
                 </div>
@@ -668,6 +852,7 @@ export default function AdminDashboard() {
         )}
       </AnimatePresence>
 
+      {/* Client Modal */}
       <AnimatePresence>
         {showAddClient && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -687,7 +872,7 @@ export default function AdminDashboard() {
                   <X className="w-5 h-5 text-slate-400" />
                 </button>
               </div>
-              <form onSubmit={handleAddClient} className="p-5 space-y-4">
+              <form onSubmit={handleAddClientSubmit} className="p-5 space-y-4">
                 <div className="space-y-1">
                   <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Full Name <span className="text-red-400">*</span></label>
                   <div className="relative">
@@ -696,6 +881,7 @@ export default function AdminDashboard() {
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all" />
                   </div>
                 </div>
+
                 <div className="space-y-1">
                   <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Email <span className="text-red-400">*</span></label>
                   <div className="relative">
@@ -704,6 +890,16 @@ export default function AdminDashboard() {
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all" />
                   </div>
                 </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">WhatsApp Number <span className="text-red-400">*</span></label>
+                  <div className="relative">
+                    <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input type="text" name="whatsapp" value={clientForm.whatsapp} onChange={handleClientFormChange} required placeholder="e.g. +919876543210 (with country code)"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all" />
+                  </div>
+                </div>
+
                 <div className="space-y-1">
                   <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Password <span className="text-red-400">*</span></label>
                   <div className="relative">
@@ -712,6 +908,7 @@ export default function AdminDashboard() {
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all" />
                   </div>
                 </div>
+
                 <div className="space-y-1">
                   <label className="text-xs font-bold font-display uppercase tracking-wider text-slate-500">Company</label>
                   <div className="relative">
@@ -720,6 +917,7 @@ export default function AdminDashboard() {
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:border-primary/30 focus:bg-white transition-all" />
                   </div>
                 </div>
+
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
                   <button type="submit" className="px-6 py-2.5 rounded-xl bg-violet-600 text-white text-sm font-bold font-display uppercase tracking-wide hover:bg-violet-700 transition-all shadow-sm cursor-pointer">
                     <UserPlus className="w-4 h-4 inline mr-1.5" /> Register Client

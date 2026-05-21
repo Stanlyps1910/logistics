@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, HelpCircle, MessageSquare } from "lucide-react";
+import { Mail, Phone, MapPin, Send, HelpCircle, MessageSquare, CheckCircle, AlertTriangle } from "lucide-react";
 import FAQAccordion from "../components/FAQAccordion";
 
 const pageVariants = {
@@ -30,35 +31,97 @@ const offices = [
 ];
 
 const departments = [
-  { name: "Autonomous Road Platoon", contact: "platoons@nexafreight.com" },
-  { name: "Hypersonic & Sub-orbital Operations", contact: "aerospace@nexafreight.com" },
-  { name: "Biotech Cryogenic Support", contact: "coldchain@nexafreight.com" },
-  { name: "General Administration", contact: "connect@nexafreight.com" }
+  { name: "Road Transport Department", contact: "roadfreight@nexafreight.com" },
+  { name: "Air Cargo Operations", contact: "aircargo@nexafreight.com" },
+  { name: "Temperature-Controlled Logistics", contact: "coldchain@nexafreight.com" },
+  { name: "General Inquiries", contact: "connect@nexafreight.com" }
 ];
 
 const faqsList = [
   {
-    question: "What is the Autonomous Logistics Protocol?",
-    answer: "Our autonomous system connects GPS payload coordinates directly with electric freight convoys and delivery drones. This removes traditional human dispatch lag and optimizes speed."
+    question: "How is my shipment route planned and tracked?",
+    answer: "We map your shipment using our route planning system, which monitors weather patterns, port congestion, and highway traffic to select the fastest, most reliable paths."
   },
   {
-    question: "How does the Biotech Cold Chain guarantee temperature safety?",
-    answer: "Every cold chain container has redundant battery backup modules, emergency nitrogen cooling valves, and real-time satellite telemetry that flags dispatch of a 0.5°C deviation."
+    question: "How do you guarantee temperature safety for cold chain goods?",
+    answer: "Our temperature-controlled cargo containers are equipped with backup power systems and real-time alerts that notify our operations team immediately of any temperature variation."
   },
   {
-    question: "Can I modify shipping routes after cargo dispatch?",
-    answer: "Yes. Using our secure tracker dashboard, cargo managers can override autonomous pathing variables and request terminal redirects or warehouse holds in transit."
+    question: "Can I modify shipping routes after my cargo has departed?",
+    answer: "Yes. You can contact our operations support team or use our digital portal to request address updates, warehouse holds, or shipping redirects while in transit."
   },
   {
-    question: "What occurs if custom clearances are delayed?",
-    answer: "Our AI systems pre-verify shipping invoices and manifest documentation against customs databases 24 hours prior to arrival, decreasing delayed clearance events to under 0.005%."
+    question: "What happens if customs clearance is delayed?",
+    answer: "Our customs team pre-verifies all shipping invoices and clearance documents 24 hours prior to arrival at ports or airports to ensure compliance and avoid unnecessary delays."
   }
 ];
 
 export default function Contact() {
-  const handleSubmit = (e) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    whatsapp: "",
+    subject: "Route Planning & Tracking",
+    message: ""
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Message node received. NexaFreight response queue initialized.");
+    setErrorMsg("");
+    setSuccessMsg("");
+    setIsLoading(true);
+
+    // E.164 Country Code validation: starts with + followed by 1-3 digits country code, then 6-12 digits
+    const whatsappPattern = /^\+[1-9]\d{1,3}\d{6,14}$/;
+    const cleanedWhatsapp = formData.whatsapp.replace(/[\s-()]/g, ""); // Strip spaces, hyphens, parentheses
+
+    if (!whatsappPattern.test(cleanedWhatsapp)) {
+      setErrorMsg("WhatsApp number must include country code starting with '+' (e.g. +919876543210 or +15551234567).");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/quotes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          whatsapp: cleanedWhatsapp,
+          subject: formData.subject,
+          message: formData.message
+        })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setSuccessMsg("Your inquiry has been received. Our team will contact you shortly.");
+        setFormData({
+          name: "",
+          email: "",
+          whatsapp: "",
+          subject: "Route Planning & Tracking",
+          message: ""
+        });
+      } else {
+        setErrorMsg(data.message || "Failed to process quote query.");
+      }
+    } catch {
+      setErrorMsg("Failed to connect to the server. Please check your network connection.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -136,18 +199,35 @@ export default function Contact() {
           </div>
 
           {/* Right Column: Contact Form */}
-          <div className="glass-card p-8 rounded-3xl border border-blue-100 bg-white">
+          <div className="glass-card p-8 rounded-3xl border border-blue-100 bg-white shadow-xl shadow-blue-500/5">
             <h2 className="text-xl font-bold font-display uppercase tracking-wide text-dark mb-6 border-b border-slate-100 pb-2">
               Send Us a Message
             </h2>
 
+            {errorMsg && (
+              <div className="mb-5 flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-sans">
+                <AlertTriangle className="w-5 h-5 flex-shrink-0 text-red-500 mt-0.5" />
+                <span>{errorMsg}</span>
+              </div>
+            )}
+
+            {successMsg && (
+              <div className="mb-5 flex items-start gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-sans">
+                <CheckCircle className="w-5 h-5 flex-shrink-0 text-emerald-600 mt-0.5" />
+                <span>{successMsg}</span>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 font-display mb-2">
-                  Your Name
+                  Your Name <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   placeholder="e.g. Alexis Thorne"
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-primary text-sm font-medium"
                   required
@@ -156,11 +236,29 @@ export default function Contact() {
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 font-display mb-2">
-                  Your Email
+                  Your Email <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="e.g. alexis@corporation.com"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-primary text-sm font-medium"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 font-display mb-2">
+                  WhatsApp Number <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="tel"
+                  name="whatsapp"
+                  value={formData.whatsapp}
+                  onChange={handleChange}
+                  placeholder="e.g. +91 98765 43210"
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-primary text-sm font-medium"
                   required
                 />
@@ -170,7 +268,12 @@ export default function Contact() {
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 font-display mb-2">
                   Inquiry Subject
                 </label>
-                <select className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-primary text-sm font-medium cursor-pointer">
+                <select
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-primary text-sm font-medium cursor-pointer"
+                >
                   <option>Route Planning & Tracking</option>
                   <option>Cold Chain Cargo</option>
                   <option>Customs Clearance & Documentation</option>
@@ -180,10 +283,13 @@ export default function Contact() {
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 font-display mb-2">
-                  Your Message
+                  Your Message <span className="text-red-400">*</span>
                 </label>
                 <textarea
                   rows="4"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="How can we help you?"
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-primary text-sm font-medium"
                   required
@@ -192,10 +298,17 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="w-full py-4 bg-primary hover:bg-secondary text-white font-bold uppercase tracking-wider font-display rounded-xl shadow-[0_4px_15px_rgba(0,71,204,0.2)] transition-colors flex items-center justify-center gap-2 cursor-pointer text-base"
+                disabled={isLoading}
+                className="w-full py-4 bg-primary hover:bg-secondary text-white font-bold uppercase tracking-wider font-display rounded-xl shadow-[0_4px_15px_rgba(0,71,204,0.2)] hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer text-base disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <span>Send Message</span>
-                <Send className="w-4 h-4" />
+                {isLoading ? (
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <Send className="w-4 h-4" />
+                  </>
+                )}
               </button>
             </form>
           </div>
@@ -208,7 +321,7 @@ export default function Contact() {
           {/* Map Placeholder */}
           <div>
             <h2 className="text-xl font-bold font-display uppercase tracking-wide text-dark mb-6">
-              Our Global Coverage Map
+              Our Logistics Network Map
             </h2>
             <div className="glass-card p-6 rounded-3xl border border-blue-100 bg-white/70 aspect-video flex flex-col justify-center items-center relative overflow-hidden">
               
