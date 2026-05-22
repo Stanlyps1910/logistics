@@ -28,7 +28,7 @@ const wordRevealItem = {
 };
 
 export default function Home() {
-  const heroText = "Delivering Tomorrow, Today. Fast and Reliable Supply Chains.";
+  const heroText = "FAST MOVES , SAFE STORAGE. TRUSTED DELIVERY";
   const heroWords = heroText.split(" ");
 
   const previewServices = [
@@ -51,7 +51,7 @@ export default function Home() {
 
   const testimonials = [
     {
-      quote: "NexaFreight simplified our cold chain logistics. Their temperature monitoring is reliable, ensuring our pharmaceutical supplies reach safely.",
+      quote: "SRI RANGA LOGISTICS simplified our cold chain logistics. Their temperature monitoring is reliable, ensuring our pharmaceutical supplies reach safely.",
       author: "Amit Sharma",
       company: "Arogya Pharmaceuticals",
       rating: 5,
@@ -119,7 +119,7 @@ export default function Home() {
                     variants={wordRevealItem}
                     className="inline-block mr-3 md:mr-4"
                   >
-                    {word.includes("Tomorrow,") || word.includes("Reliable") ? (
+                    {word.includes("SAFE") || word.includes("TRUSTED") || word.includes("DELIVERY") ? (
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary text-glow">
                         {word}
                       </span>
@@ -410,7 +410,7 @@ export default function Home() {
               CLIENT TESTIMONIALS
             </h2>
             <p className="mt-4 text-slate-500 text-base md:text-lg">
-              What corporate partners, distributors, and operations managers say about working with NexaFreight.
+              What corporate partners, distributors, and operations managers say about working with SRI RANGA LOGISTICS.
             </p>
           </div>
 

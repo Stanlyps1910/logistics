@@ -13,28 +13,28 @@ const offices = [
   {
     city: "Bengaluru (HQ)",
     address: "Koramangala 5th Block, Bengaluru, KA 560095",
-    phone: "+91 (80) 555-NEXA",
-    mail: "hq@nexafreight.com"
+    phone: "+91 (80) 555-SRI",
+    mail: "hq@srirangalogistics.com"
   },
   {
     city: "Mumbai Terminal",
     address: "JNPT Cargo Center, Sector 4, Navi Mumbai, MH",
-    phone: "+91 (22) 555-NEXA",
-    mail: "bom@nexafreight.com"
+    phone: "+91 (22) 555-SRI",
+    mail: "bom@srirangalogistics.com"
   },
   {
     city: "New Delhi Node",
     address: "IGI Cargo Terminal, Phase 2, New Delhi, DL",
-    phone: "+91 (11) 555-NEXA",
-    mail: "del@nexafreight.com"
+    phone: "+91 (11) 555-SRI",
+    mail: "del@srirangalogistics.com"
   }
 ];
 
 const departments = [
-  { name: "Road Transport Department", contact: "roadfreight@nexafreight.com" },
-  { name: "Air Cargo Operations", contact: "aircargo@nexafreight.com" },
-  { name: "Temperature-Controlled Logistics", contact: "coldchain@nexafreight.com" },
-  { name: "General Inquiries", contact: "connect@nexafreight.com" }
+  { name: "Road Transport Department", contact: "roadfreight@srirangalogistics.com" },
+  { name: "Air Cargo Operations", contact: "aircargo@srirangalogistics.com" },
+  { name: "Temperature-Controlled Logistics", contact: "coldchain@srirangalogistics.com" },
+  { name: "General Inquiries", contact: "connect@srirangalogistics.com" }
 ];
 
 const faqsList = [

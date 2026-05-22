@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
 } else {
   // Root Endpoint
   app.get("/", (req, res) => {
-    res.json({ message: "Welcome to NexaFreight Logistics API" });
+    res.json({ message: "Welcome to SRI RANGA LOGISTICS API" });
   });
 }
 

@@ -5,7 +5,7 @@ const ChatContext = createContext(null);
 export function ChatProvider({ children }) {
   const [messages, setMessages] = useState(() => {
     try {
-      const stored = localStorage.getItem('nexafreight_chat');
+      const stored = localStorage.getItem('sriranga_chat');
       return stored ? JSON.parse(stored) : [];
     } catch {
       return [];
@@ -15,7 +15,7 @@ export function ChatProvider({ children }) {
 
   const loadMessages = useCallback(() => {
     try {
-      const stored = localStorage.getItem('nexafreight_chat');
+      const stored = localStorage.getItem('sriranga_chat');
       const parsed = stored ? JSON.parse(stored) : [];
       setMessages(prev => {
         if (JSON.stringify(prev) !== JSON.stringify(parsed)) return parsed;
@@ -29,7 +29,7 @@ export function ChatProvider({ children }) {
   useEffect(() => {
     intervalRef.current = setInterval(loadMessages, 3000);
     const handleStorage = (e) => {
-      if (e.key === 'nexafreight_chat') loadMessages();
+      if (e.key === 'sriranga_chat') loadMessages();
     };
     window.addEventListener('storage', handleStorage);
     return () => {
@@ -47,9 +47,9 @@ export function ChatProvider({ children }) {
       content,
       timestamp: new Date().toISOString(),
     };
-    const existing = JSON.parse(localStorage.getItem('nexafreight_chat') || '[]');
+    const existing = JSON.parse(localStorage.getItem('sriranga_chat') || '[]');
     const updated = [...existing, newMessage];
-    localStorage.setItem('nexafreight_chat', JSON.stringify(updated));
+    localStorage.setItem('sriranga_chat', JSON.stringify(updated));
     setMessages(updated);
   };
 

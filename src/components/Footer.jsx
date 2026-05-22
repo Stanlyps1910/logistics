@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 import { 
   Send, 
   ShieldCheck,  
@@ -46,13 +47,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Info */}
           <div className="space-y-6">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 flex items-center justify-center bg-primary rounded-lg text-white font-display font-black text-base">
-                N
-              </div>
-              <span className="text-lg font-bold tracking-tight font-display">
-                NEXA<span className="text-secondary">FREIGHT</span>
-              </span>
+            <Link to="/" className="inline-block">
+              <Logo className="h-14 md:h-18 w-auto" />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed">
               Propelling global commerce forward with reliable scheduling, optimized route mapping, and temperature-controlled logistics.
@@ -62,15 +58,15 @@ export default function Footer() {
             <div className="space-y-3 text-sm text-slate-300">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-secondary shrink-0 mt-0.5" />
-                <span>NexaFreight Logistics HQ, 5th Block, Koramangala, Bengaluru, KA 560095, India</span>
+                <span>SRI RANGA LOGISTICS HQ, 5th Block, Koramangala, Bengaluru, KA 560095, India</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-secondary shrink-0" />
-                <span>+91 (80) 555-NEXA</span>
+                <span>+91 (80) 555-SRI</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-secondary shrink-0" />
-                <span>connect@nexafreight.com</span>
+                <span>connect@srirangalogistics.com</span>
               </div>
             </div>
           </div>
@@ -168,7 +164,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 space-y-4 sm:space-y-0">
           <div>
-            &copy; {currentYear} NexaFreight Logistics Inc. All rights reserved.
+            &copy; {currentYear} SRI RANGA LOGISTICS. All rights reserved.
           </div>
           
           {/* Social Icons */}

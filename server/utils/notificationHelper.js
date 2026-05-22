@@ -42,14 +42,14 @@ const getTwilioClient = () => {
  * Send email & WhatsApp notification to Admin when a new Quote is submitted.
  */
 const sendQuoteNotifications = async (quote) => {
-  const adminEmail = process.env.ADMIN_EMAIL || "admin@nexafreight.com";
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@srirangalogistics.com";
   const adminWhatsapp = process.env.ADMIN_WHATSAPP || "+919876543210";
   
-  const emailSubject = `NexaFreight: New Quote Inquiry from ${quote.name}`;
+  const emailSubject = `SRI RANGA LOGISTICS: New Quote Inquiry from ${quote.name}`;
   const emailText = `
 Hello Admin,
 
-A new quote inquiry has been submitted on NexaFreight:
+A new quote inquiry has been submitted on SRI RANGA LOGISTICS:
 
 Name: ${quote.name}
 Email: ${quote.email}
@@ -63,10 +63,10 @@ ${quote.message}
 Please log in to your Admin Dashboard to manage this inquiry or convert it to a shipment.
 
 Best Regards,
-NexaFreight Automation
+SRI RANGA LOGISTICS Automation
   `;
 
-  const whatsappMessage = `*NexaFreight - New Inquiry Received*\n\n*From:* ${quote.name}\n*Email:* ${quote.email}\n*WhatsApp:* ${quote.whatsapp}\n*Subject:* ${quote.subject}\n*Message:* ${quote.message}`;
+  const whatsappMessage = `*SRI RANGA LOGISTICS - New Inquiry Received*\n\n*From:* ${quote.name}\n*Email:* ${quote.email}\n*WhatsApp:* ${quote.whatsapp}\n*Subject:* ${quote.subject}\n*Message:* ${quote.message}`;
 
   // 1. Send Email
   const transporter = createMailTransporter();
@@ -129,7 +129,7 @@ const sendShipmentStatusNotifications = async (shipment) => {
   const clientEmail = shipment.clientEmail;
   const clientWhatsapp = shipment.clientWhatsapp;
 
-  const emailSubject = `NexaFreight Shipment Update: Tracking ID ${shipment.trackingId} is now [${shipment.status.toUpperCase()}]`;
+  const emailSubject = `SRI RANGA LOGISTICS Shipment Update: Tracking ID ${shipment.trackingId} is now [${shipment.status.toUpperCase()}]`;
   const emailText = `
 Hello ${shipment.clientName},
 
@@ -143,13 +143,13 @@ ETA: ${shipment.eta}
 
 Special Instructions: ${shipment.specialInstructions || "None"}
 
-You can track this shipment or view details in the NexaFreight Portal using your Tracking ID.
+You can track this shipment or view details in the SRI RANGA LOGISTICS Portal using your Tracking ID.
 
 Best Regards,
-NexaFreight Logistics Team
+SRI RANGA LOGISTICS Logistics Team
   `;
 
-  const whatsappMessage = `*NexaFreight Shipment Update*\n\nDear ${shipment.clientName},\nYour shipment *${shipment.trackingId}* (${shipment.origin} ➔ ${shipment.destination}) status has been updated to: *${shipment.status}*.\n\n*ETA:* ${shipment.eta}\n*Freight:* ${shipment.freightType.toUpperCase()}\n\nThank you for choosing NexaFreight!`;
+  const whatsappMessage = `*SRI RANGA LOGISTICS Shipment Update*\n\nDear ${shipment.clientName},\nYour shipment *${shipment.trackingId}* (${shipment.origin} ➔ ${shipment.destination}) status has been updated to: *${shipment.status}*.\n\n*ETA:* ${shipment.eta}\n*Freight:* ${shipment.freightType.toUpperCase()}\n\nThank you for choosing SRI RANGA LOGISTICS!`;
 
   // 1. Send Email
   const transporter = createMailTransporter();

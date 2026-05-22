@@ -1,6 +1,6 @@
-# NexaFreight Logistics Management Platform
+# SRI RANGA LOGISTICS Management Platform
 
-NexaFreight is a modern, high-performance logistics management platform built on the MERN stack (MongoDB, Express, React, Node.js). It provides real-time shipment tracking, rate calculators, client administration tools, automated status notifications, and comprehensive operations analytics.
+SRI RANGA LOGISTICS is a modern, high-performance logistics management platform built on the MERN stack (MongoDB, Express, React, Node.js). It provides real-time shipment tracking, rate calculators, client administration tools, automated status notifications, and comprehensive operations analytics.
 
 ---
 
@@ -47,7 +47,7 @@ Create a `.env` file in the `server` directory and add the following keys:
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/nexafreight
+MONGO_URI=mongodb://localhost:27017/srirangalogistics
 NODE_ENV=development
 
 # Email Alerts (Optional)
@@ -78,7 +78,7 @@ npm run dev
 ```
 
 Open `http://localhost:5173` in your browser. Admin credentials for testing:
-* **Email**: `admin@nexafreight.com`
+* **Email**: `admin@srirangalogistics.com`
 * **Password**: `admin123`
 
 ---
@@ -94,25 +94,25 @@ This approach hosts the frontend as a fast, globally distributed **Static Site**
 1. Log in to [Render](https://render.com/) and click **New > Web Service**.
 2. Connect your Git repository.
 3. Set the following configurations:
-   * **Name**: `nexafreight-backend`
+   * **Name**: `srirangalogistics-backend`
    * **Environment**: `Node`
    * **Root Directory**: `server`
    * **Build Command**: `npm install`
    * **Start Command**: `node server.js`
 4. Expand the **Advanced** section and add your Environment Variables (from your local `.env`). Ensure `NODE_ENV` is set to `production`.
-5. Click **Create Web Service**. Note your backend URL (e.g., `https://nexafreight-backend.onrender.com`).
+5. Click **Create Web Service**. Note your backend URL (e.g., `https://srirangalogistics-backend.onrender.com`).
 
 #### 2. Deploy the Frontend (Static Site)
 1. Click **New > Static Site** on Render.
 2. Connect your Git repository.
 3. Set the following configurations:
-   * **Name**: `nexafreight`
+   * **Name**: `srirangalogistics`
    * **Build Command**: `npm run build`
    * **Publish Directory**: `dist`
 4. Under the **Redirects/Rewrites** tab in your Static Site's settings:
    * Add a Rewrite rule to route API traffic:
      * **Source**: `/api/*`
-     * **Destination**: `https://nexafreight-backend.onrender.com/api/*` (Replace with your actual backend URL)
+     * **Destination**: `https://srirangalogistics-backend.onrender.com/api/*` (Replace with your actual backend URL)
      * **Action**: `Rewrite`
    * Add a client-side routing fallback rule:
      * **Source**: `/*`
@@ -128,7 +128,7 @@ This approach compiles the React app and serves it directly from the Express bac
 1. Click **New > Web Service** on Render.
 2. Connect your Git repository.
 3. Set the following configurations:
-   * **Name**: `nexafreight-all`
+   * **Name**: `srirangalogistics-all`
    * **Environment**: `Node`
    * **Root Directory**: Leave blank (repo root)
    * **Build Command**: `npm install && npm run build && cd server && npm install`

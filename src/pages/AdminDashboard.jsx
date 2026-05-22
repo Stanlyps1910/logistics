@@ -734,7 +734,7 @@ export default function AdminDashboard() {
       activeNav={activeNav}
       onNavChange={setActiveNav}
       title="Admin Panel"
-      subtitle="NexaFreight Logistics"
+      subtitle="SRI RANGA LOGISTICS"
       user={user}
       onLogout={logout}
       variant="light"
@@ -742,7 +742,7 @@ export default function AdminDashboard() {
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-20">
           <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4" />
-          <p className="text-sm font-medium text-slate-500 font-sans">Loading data from NexaFreight API...</p>
+          <p className="text-sm font-medium text-slate-500 font-sans">Loading data from SRI RANGA LOGISTICS API...</p>
         </div>
       ) : (
         <>

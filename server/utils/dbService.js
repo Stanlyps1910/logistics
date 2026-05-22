@@ -27,10 +27,10 @@ const seedJSONFiles = () => {
     fs.writeFileSync(FILES.users, JSON.stringify([{
       _id: "admin_seed_1",
       name: "Priya Sharma",
-      email: "admin@nexafreight.com",
+      email: "admin@srirangalogistics.com",
       password: "admin123",
       role: "admin",
-      company: "NexaFreight Logistics",
+      company: "SRI RANGA LOGISTICS",
       loginTime: new Date().toISOString(),
       createdAt: new Date().toISOString()
     }], null, 2));
@@ -42,7 +42,7 @@ const seedJSONFiles = () => {
       {
         _id: "client_seed_1",
         name: "Arjun Mehta",
-        email: "client@nexafreight.com",
+        email: "client@srirangalogistics.com",
         password: "client123",
         company: "TechVista Solutions",
         whatsapp: "+919876543210",
@@ -75,7 +75,7 @@ const seedJSONFiles = () => {
   if (!fs.existsSync(FILES.shipments)) {
     const seedShipments = [];
     const trackingChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const getRandomId = () => "NX-" +
+    const getRandomId = () => "SRL-" +
       Array.from({ length: 4 }, () => trackingChars[Math.floor(Math.random() * trackingChars.length)]).join("") + "-" +
       Array.from({ length: 2 }, () => trackingChars[Math.floor(Math.random() * trackingChars.length)]).join("");
 
@@ -83,12 +83,12 @@ const seedJSONFiles = () => {
     const currentYear = now.getFullYear();
 
     const shipmentData = [
-      { clientName: "Arjun Mehta", clientEmail: "client@nexafreight.com", origin: "Mumbai", destination: "Delhi", status: "Delivered", cost: 15400, monthIdx: 0, day: 15 },
-      { clientName: "Arjun Mehta", clientEmail: "client@nexafreight.com", origin: "Tokyo Hub", destination: "Bengaluru", status: "Delivered", cost: 45000, monthIdx: 1, day: 10 },
+      { clientName: "Arjun Mehta", clientEmail: "client@srirangalogistics.com", origin: "Mumbai", destination: "Delhi", status: "Delivered", cost: 15400, monthIdx: 0, day: 15 },
+      { clientName: "Arjun Mehta", clientEmail: "client@srirangalogistics.com", origin: "Tokyo Hub", destination: "Bengaluru", status: "Delivered", cost: 45000, monthIdx: 1, day: 10 },
       { clientName: "Sarah Jenkins", clientEmail: "sjenkins@acmecorp.com", origin: "Mumbai", destination: "Bengaluru", status: "Delivered", cost: 22000, monthIdx: 2, day: 22 },
-      { clientName: "Arjun Mehta", clientEmail: "client@nexafreight.com", origin: "Bengaluru", destination: "Chennai", status: "Picked Up", cost: 8900, monthIdx: 3, day: 5 },
+      { clientName: "Arjun Mehta", clientEmail: "client@srirangalogistics.com", origin: "Bengaluru", destination: "Chennai", status: "Picked Up", cost: 8900, monthIdx: 3, day: 5 },
       { clientName: "Sarah Jenkins", clientEmail: "sjenkins@acmecorp.com", origin: "Delhi", destination: "Mumbai", status: "In Transit", cost: 17500, monthIdx: 4, day: 12 },
-      { clientName: "Arjun Mehta", clientEmail: "client@nexafreight.com", origin: "Kolkata", destination: "Mumbai", status: "Customs Clearance", cost: 35000, monthIdx: 5, day: 20 },
+      { clientName: "Arjun Mehta", clientEmail: "client@srirangalogistics.com", origin: "Kolkata", destination: "Mumbai", status: "Customs Clearance", cost: 35000, monthIdx: 5, day: 20 },
       { clientName: "Sarah Jenkins", clientEmail: "sjenkins@acmecorp.com", origin: "Chennai", destination: "Hyderabad", status: "Delivered", cost: 12000, monthIdx: 5, day: 18 }
     ];
 

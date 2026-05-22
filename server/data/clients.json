@@ -2,12 +2,12 @@
   {
     "_id": "client_seed_1",
     "name": "Arjun Mehta",
-    "email": "client@nexafreight.com",
+    "email": "client@srirangalogistics.com",
     "password": "client123",
     "company": "TechVista Solutions",
     "whatsapp": "+919876543210",
     "shipments": 2,
-    "status": "Suspended",
+    "status": "Active",
     "joined": "2026-05-21",
     "createdAt": "2026-05-21T16:13:44.133Z"
   },
@@ -19,7 +19,7 @@
     "company": "Acme Corporation",
     "whatsapp": "+15550199",
     "shipments": 1,
-    "status": "Suspended",
+    "status": "Active",
     "joined": "2026-05-21",
     "createdAt": "2026-05-21T16:13:44.133Z"
   }

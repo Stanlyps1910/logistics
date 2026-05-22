@@ -2,11 +2,11 @@
   {
     "_id": "admin_seed_1",
     "name": "Priya Sharma",
-    "email": "admin@nexafreight.com",
+    "email": "admin@srirangalogistics.com",
     "password": "admin123",
     "role": "admin",
-    "company": "NexaFreight Logistics",
-    "loginTime": "2026-05-21T16:22:50.136Z",
+    "company": "SRI RANGA LOGISTICS",
+    "loginTime": "2026-05-22T03:30:18.903Z",
     "createdAt": "2026-05-21T16:13:44.132Z"
   }
 ]

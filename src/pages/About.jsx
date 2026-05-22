@@ -11,7 +11,7 @@ const timelineMilestones = [
   {
     year: "2018",
     title: "Company Founding",
-    description: "NexaFreight Logistics is founded in Bengaluru, India's tech hub. Our team finalizes the core routing and scheduling software, laying the basis for automated scheduling."
+    description: "SRI RANGA LOGISTICS is founded in Bengaluru, India's tech hub. Our team finalizes the core routing and scheduling software, laying the basis for automated scheduling."
   },
   {
     year: "2020",
@@ -71,7 +71,7 @@ export default function About() {
         <div className="text-center max-w-3xl mx-auto mb-20">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200/50 text-xs font-black uppercase tracking-widest text-primary mb-4 font-display">
             <Users className="w-3.5 h-3.5" />
-            <span>NexaFreight Logistics Network</span>
+            <span>SRI RANGA LOGISTICS Network</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-dark tracking-tight leading-none mb-6">
             OUR HISTORY
@@ -89,7 +89,7 @@ export default function About() {
             </h2>
             <div className="space-y-4 text-slate-600 text-base leading-relaxed">
               <p>
-                In an era of unpredictable port delays and supply chain bottlenecks, traditional logistics models are falling behind. NexaFreight Logistics was founded to provide fast, reliable, and intelligent routing.
+                In an era of unpredictable port delays and supply chain bottlenecks, traditional logistics models are falling behind. SRI RANGA LOGISTICS was founded to provide fast, reliable, and intelligent routing.
               </p>
               <p>
                 We do not just ship containers; we actively monitor every cargo path and vehicle. By analyzing weather, customs clearance, and traffic positions in real-time, we route around delays before they happen.
@@ -195,7 +195,7 @@ export default function About() {
               LEADERSHIP TEAM
             </h2>
             <p className="mt-4 text-slate-500">
-              The team managing NexaFreight's global logistics network.
+              The team managing SRI RANGA LOGISTICS' global logistics network.
             </p>
           </div>
 

@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight, Shield, User, LogOut, ChevronDown } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import Logo from "./Logo";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,24 +60,14 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
           isScrolled
-            ? "bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-[0_4px_20px_rgba(0,71,204,0.03)] py-3"
-            : "bg-transparent py-5"
+            ? "bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-[0_4px_20px_rgba(0,71,204,0.03)] py-2"
+            : "bg-transparent py-4"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2 group">
-              <div className="relative w-9 h-9 flex items-center justify-center bg-primary rounded-lg shadow-[0_4px_12px_rgba(0,71,204,0.2)] overflow-hidden">
-                {/* Glowing inner network nodes */}
-                <span className="text-white font-display font-black text-lg">N</span>
-                <div className="absolute inset-0 bg-gradient-to-tr from-secondary to-highlight opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <span className="text-white font-display font-black text-lg">N</span>
-                </div>
-              </div>
-              <span className="text-xl font-bold tracking-tight text-dark font-display">
-                NEXA<span className="text-primary">FREIGHT</span>
-              </span>
+            <Link to="/" className="flex items-center group">
+              <Logo className="h-12 md:h-16 w-auto transition-transform duration-300 group-hover:scale-[1.03]" />
             </Link>
 
             {/* Desktop Navigation */}

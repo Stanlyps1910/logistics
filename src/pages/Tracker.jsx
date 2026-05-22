@@ -9,14 +9,14 @@ const pageVariants = {
 };
 
 const mockDatabase = {
-  "NX-4820-T1": {
-    id: "NX-4820-T1",
+  "SRL-4820-T1": {
+    id: "SRL-4820-T1",
     status: "Delivered",
     step: 5,
     origin: "Mumbai Terminal (BOM-1)",
     destination: "Bengaluru Corporate Hub (BLR-4)",
     eta: "Delivered on May 19, 2026",
-    carrier: "NexaAir Cargo Flight 802",
+    carrier: "SRL Air Cargo Flight 802",
     weight: "14.5 kg",
     dimensions: "40 x 30 x 25 cm",
     history: [
@@ -27,14 +27,14 @@ const mockDatabase = {
       { step: 5, label: "Delivered", date: "May 19, 2026 - 02:45 PM", loc: "Corporate Hub, Sector 9 (Koramangala)" }
     ]
   },
-  "NX-1938-C5": {
-    id: "NX-1938-C5",
+  "SRL-1938-C5": {
+    id: "SRL-1938-C5",
     status: "Customs Clearance",
     step: 3,
     origin: "Mumbai Port Terminal (BOM-2)",
     destination: "Bengaluru Whitefield Hub (BLR-2)",
     eta: "Estimated: May 22, 2026",
-    carrier: "NexaRoad Cargo Truck #40",
+    carrier: "SRL Road Cargo Truck #40",
     weight: "240.0 kg",
     dimensions: "120 x 80 x 95 cm",
     history: [
@@ -45,14 +45,14 @@ const mockDatabase = {
       { step: 5, label: "Delivered", date: "Pending", loc: "Destination" }
     ]
   },
-  "NX-9274-P9": {
-    id: "NX-9274-P9",
+  "SRL-9274-P9": {
+    id: "SRL-9274-P9",
     status: "Picked Up",
     step: 1,
     origin: "Bengaluru Kempegowda Hub (BLR-1)",
     destination: "Chennai Cargo Gate (MAA-5)",
     eta: "Estimated: May 21, 2026",
-    carrier: "NexaRoad Cargo Truck #18",
+    carrier: "SRL Road Cargo Truck #18",
     weight: "3.2 kg",
     dimensions: "20 x 20 x 15 cm",
     history: [
@@ -158,7 +158,7 @@ export default function Tracker() {
           origin: shipment.origin,
           destination: shipment.destination,
           eta: shipment.status === "Delivered" ? `Delivered on ${shipment.eta}` : `Estimated: ${shipment.eta}`,
-          carrier: `Nexa${shipment.freightType.charAt(0).toUpperCase() + shipment.freightType.slice(1)} Cargo`,
+          carrier: `SRL ${shipment.freightType.charAt(0).toUpperCase() + shipment.freightType.slice(1)} Cargo`,
           weight: `${shipment.weight} kg`,
           dimensions: "Standard Cargo Container",
           history: buildHistory(shipment)
@@ -242,7 +242,7 @@ export default function Tracker() {
                 <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Enter Tracking ID (e.g. NX-4820-T1)"
+                  placeholder="Enter Tracking ID (e.g. SRL-4820-T1)"
                   value={trackingId}
                   onChange={(e) => setTrackingId(e.target.value)}
                   className="w-full pl-12 pr-4 py-4 rounded-xl border border-slate-200 text-slate-800 bg-white font-display font-medium uppercase tracking-wider focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:normal-case placeholder:font-sans placeholder:tracking-normal text-base"
@@ -275,9 +275,9 @@ export default function Tracker() {
             </p>
             <div className="space-y-3">
               {[
-                { id: "NX-4820-T1", label: "Delivered shipment", statusColor: "text-green-500" },
-                { id: "NX-1938-C5", label: "In customs clearance", statusColor: "text-blue-500" },
-                { id: "NX-9274-P9", label: "Newly registered shipment", statusColor: "text-yellow-500" }
+                { id: "SRL-4820-T1", label: "Delivered shipment", statusColor: "text-green-500" },
+                { id: "SRL-1938-C5", label: "In customs clearance", statusColor: "text-blue-500" },
+                { id: "SRL-9274-P9", label: "Newly registered shipment", statusColor: "text-yellow-500" }
               ].map((demo) => (
                 <button
                   key={demo.id}

@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
 
     // Helper to generate tracking ID
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const trackingId = "NX-" +
+    const trackingId = "SRL-" +
       Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("") +
       "-" +
       Array.from({ length: 2 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");

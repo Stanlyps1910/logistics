@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, LogOut } from "lucide-react";
+import Logo from "./Logo";
 
 export default function SidebarLayout({
   navItems,
@@ -35,14 +36,10 @@ export default function SidebarLayout({
         sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       } ${sidebarBg}`}>
         <div className={`flex items-center gap-3 px-5 py-4 border-b lg:px-6 lg:py-5 ${isDark ? "border-white/10" : "border-slate-200"}`}>
-          <div className={`w-9 h-9 rounded-lg flex items-center justify-center font-display font-black text-lg flex-shrink-0 ${
-            isDark ? "bg-blue-500/20 text-blue-400" : "bg-primary text-white"
-          }`}>
-            N
-          </div>
+          <Logo iconOnly={true} className="w-12 h-12 flex-shrink-0" />
           <div className="min-w-0">
             <h1 className={`font-display font-bold text-sm uppercase tracking-wide truncate ${textColor}`}>
-              {title || "NexaFreight"}
+              {title || "SRI RANGA LOGISTICS"}
             </h1>
             {subtitle && (
               <p className={`text-[10px] font-medium truncate ${mutedText}`}>{subtitle}</p>

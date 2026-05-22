@@ -4,12 +4,12 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    const stored = localStorage.getItem("nexafreight_auth");
+    const stored = localStorage.getItem("sriranga_auth");
     if (stored) {
       try {
         return JSON.parse(stored);
       } catch {
-        localStorage.removeItem("nexafreight_auth");
+        localStorage.removeItem("sriranga_auth");
       }
     }
     return null;
@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
-        localStorage.setItem("nexafreight_auth", JSON.stringify(data.user));
+        localStorage.setItem("sriranga_auth", JSON.stringify(data.user));
         return { success: true };
       } else {
         return { success: false, message: data.message || "Invalid email or password." };
@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("nexafreight_auth");
+    localStorage.removeItem("sriranga_auth");
   };
 
   return (

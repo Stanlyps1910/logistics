@@ -104,7 +104,7 @@ export default function AdminLogin() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@nexafreight.com"
+                    placeholder="admin@srirangalogistics.com"
                     required
                     className="w-full pl-10 pr-4 py-3 rounded-xl border border-blue-100 bg-white/80 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm font-sans text-dark transition-all"
                   />
@@ -155,7 +155,7 @@ export default function AdminLogin() {
                 <span className="font-display uppercase tracking-wider">Admin Test Account</span>
               </div>
               <p className="text-xs text-slate-600 font-mono">
-                Email: <span className="text-primary font-semibold">admin@nexafreight.com</span><br />
+                Email: <span className="text-primary font-semibold">admin@srirangalogistics.com</span><br />
                 Password: <span className="text-primary font-semibold">admin123</span>
               </p>
             </div>
