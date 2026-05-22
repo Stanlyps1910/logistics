@@ -216,7 +216,7 @@ export default function Tracker() {
         
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200/50 text-xs font-black uppercase tracking-widest text-primary mb-4 font-display">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/50 text-xs font-black uppercase tracking-widest text-primary mb-4 font-display">
             <Box className="w-3.5 h-3.5" />
             <span>Shipment Tracking System</span>
           </div>
@@ -232,7 +232,7 @@ export default function Tracker() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-12">
           
           {/* Tracking Search Input Card */}
-          <div className="lg:col-span-2 glass-card p-8 rounded-3xl border border-blue-100 bg-white/70">
+          <div className="lg:col-span-2 glass-card p-8 rounded-3xl border border-emerald-100 bg-white/70">
             <h3 className="text-xl font-bold font-display uppercase tracking-wide text-dark mb-6">
               Track Shipment
             </h3>
@@ -251,7 +251,7 @@ export default function Tracker() {
               </div>
               <button
                 type="submit"
-                className="px-8 py-4 bg-primary hover:bg-secondary text-white font-bold uppercase tracking-wider font-display rounded-xl shadow-[0_4px_15px_rgba(0,71,204,0.2)] transition-colors text-base"
+                className="px-8 py-4 bg-primary hover:bg-secondary text-white font-bold uppercase tracking-wider font-display rounded-xl shadow-[0_4px_15px_rgba(0,76,41,0.2)] transition-colors text-base"
               >
                 Track Status
               </button>
@@ -266,7 +266,7 @@ export default function Tracker() {
           </div>
 
           {/* Quick Demo Selector */}
-          <div className="glass-card p-8 rounded-3xl border border-blue-100 bg-white/70">
+          <div className="glass-card p-8 rounded-3xl border border-emerald-100 bg-white/70">
             <h3 className="text-lg font-bold font-display uppercase tracking-wider text-slate-500 mb-4">
               Sample Shipments
             </h3>
@@ -276,7 +276,7 @@ export default function Tracker() {
             <div className="space-y-3">
               {[
                 { id: "SRL-4820-T1", label: "Delivered shipment", statusColor: "text-green-500" },
-                { id: "SRL-1938-C5", label: "In customs clearance", statusColor: "text-blue-500" },
+                { id: "SRL-1938-C5", label: "In customs clearance", statusColor: "text-emerald-500" },
                 { id: "SRL-9274-P9", label: "Newly registered shipment", statusColor: "text-yellow-500" }
               ].map((demo) => (
                 <button
@@ -303,7 +303,7 @@ export default function Tracker() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="glass-card p-8 rounded-3xl border border-blue-100 bg-white"
+            className="glass-card p-8 rounded-3xl border border-emerald-100 bg-white"
           >
             {/* Telemetry diagnostics header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-6 mb-8 gap-4">
@@ -317,11 +317,11 @@ export default function Tracker() {
               </div>
 
               <div className="flex gap-4">
-                <div className="px-4 py-2.5 rounded-xl bg-blue-50 border border-blue-100/50 flex flex-col items-center">
+                <div className="px-4 py-2.5 rounded-xl bg-emerald-50 border border-emerald-100/50 flex flex-col items-center">
                   <span className="text-[9px] font-black uppercase tracking-wider text-slate-400 font-display">Carrier</span>
                   <span className="text-xs font-bold text-dark font-display mt-0.5">{activeTracking.carrier}</span>
                 </div>
-                <div className="px-4 py-2.5 rounded-xl bg-blue-50 border border-blue-100/50 flex flex-col items-center">
+                <div className="px-4 py-2.5 rounded-xl bg-emerald-50 border border-emerald-100/50 flex flex-col items-center">
                   <span className="text-[9px] font-black uppercase tracking-wider text-slate-400 font-display">Estimated Delivery</span>
                   <span className="text-xs font-bold text-primary font-display mt-0.5">{activeTracking.eta}</span>
                 </div>
@@ -380,7 +380,7 @@ export default function Tracker() {
                           transition={{ repeat: isCurrent ? Infinity : 0, duration: 2 }}
                           className={`w-12 h-12 rounded-full border-4 flex items-center justify-center font-display font-black text-sm z-10 shrink-0 ${
                             isDone 
-                              ? "bg-primary border-blue-200 text-white shadow-[0_0_15px_rgba(0,71,204,0.3)]" 
+                              ? "bg-primary border-emerald-200 text-white shadow-[0_0_15px_rgba(0,76,41,0.3)]" 
                               : "bg-white border-slate-200 text-slate-400"
                           }`}
                         >

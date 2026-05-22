@@ -60,7 +60,7 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
           isScrolled
-            ? "bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-[0_4px_20px_rgba(0,71,204,0.03)] py-2"
+            ? "bg-white/80 backdrop-blur-md border-b border-emerald-100/50 shadow-[0_4px_20px_rgba(0,76,41,0.03)] py-2"
             : "bg-transparent py-4"
         }`}
       >
@@ -135,12 +135,12 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -5, scale: 0.97 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-md border border-blue-100/60 rounded-xl shadow-[0_12px_40px_rgba(0,71,204,0.12)] overflow-hidden z-50"
+                      className="absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-md border border-emerald-100/60 rounded-xl shadow-[0_12px_40px_rgba(0,76,41,0.12)] overflow-hidden z-50"
                       onClick={(e) => e.stopPropagation()}
                     >
                       {isAuthenticated ? (
                         <div className="p-2">
-                          <div className="px-3 py-2 border-b border-blue-50 mb-1">
+                          <div className="px-3 py-2 border-b border-emerald-50 mb-1">
                             <p className="text-xs font-bold text-dark font-display">{user.name}</p>
                             <p className="text-[10px] text-slate-400 font-sans">{user.email}</p>
                             <span className="inline-block mt-1 text-[9px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-2 py-0.5 rounded-full font-display">
@@ -149,7 +149,7 @@ export default function Navbar() {
                           </div>
                           <Link
                             to="/admin/dashboard"
-                            className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-blue-50 rounded-lg transition-colors font-sans"
+                            className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition-colors font-sans"
                           >
                             <Shield className="w-4 h-4 text-primary" />
                             My Dashboard
@@ -166,7 +166,7 @@ export default function Navbar() {
                         <div className="p-2">
                           <Link
                             to="/admin/login"
-                            className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-50 rounded-lg transition-colors font-sans"
+                            className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition-colors font-sans"
                           >
                             <Shield className="w-4 h-4 text-primary" />
                             Admin Login
@@ -181,7 +181,7 @@ export default function Navbar() {
               {/* Track CTA */}
               <Link
                 to="/tracker"
-                className="relative inline-flex items-center justify-center px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-primary rounded-lg overflow-hidden group shadow-[0_4px_15px_rgba(0,71,204,0.2)] hover:shadow-[0_0_20px_rgba(0,180,216,0.4)] transition-all duration-300"
+                className="relative inline-flex items-center justify-center px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-primary rounded-lg overflow-hidden group shadow-[0_4px_15px_rgba(0,76,41,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all duration-300"
               >
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary to-secondary transition-all duration-300 group-hover:opacity-0"></span>
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-secondary to-highlight opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
@@ -221,7 +221,7 @@ export default function Navbar() {
               animate={{ y: 0 }}
               exit={{ y: "-100%" }}
               transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-              className="bg-white/95 border-b border-blue-100 shadow-2xl pt-24 pb-8 px-4 sm:px-6"
+              className="bg-white/95 border-b border-emerald-100 shadow-2xl pt-24 pb-8 px-4 sm:px-6"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex flex-col space-y-3">
@@ -232,7 +232,7 @@ export default function Navbar() {
                     className={({ isActive }) =>
                       `block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider transition-all ${
                         isActive
-                          ? "bg-blue-50 text-primary border-l-4 border-primary"
+                          ? "bg-emerald-50 text-primary border-l-4 border-primary"
                           : "text-slate-600 hover:bg-slate-50 hover:text-primary"
                       }`
                     }
@@ -242,7 +242,7 @@ export default function Navbar() {
                 ))}
 
                 {/* Portal Links (Mobile) */}
-                <div className="pt-2 border-t border-blue-100 mt-2">
+                <div className="pt-2 border-t border-emerald-100 mt-2">
                   {isAuthenticated ? (
                     <>
                       <div className="px-4 py-2 mb-2">
@@ -253,7 +253,7 @@ export default function Navbar() {
                       </div>
                       <Link
                         to="/admin/dashboard"
-                        className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-primary hover:bg-blue-50 transition-all"
+                        className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-primary hover:bg-emerald-50 transition-all"
                       >
                         My Dashboard
                       </Link>
@@ -268,7 +268,7 @@ export default function Navbar() {
                     <>
                       <Link
                         to="/admin/login"
-                        className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-slate-600 hover:bg-blue-50 hover:text-primary transition-all"
+                        className="block px-4 py-3 rounded-lg font-bold font-display text-lg uppercase tracking-wider text-slate-600 hover:bg-emerald-50 hover:text-primary transition-all"
                       >
                         Admin Login
                       </Link>

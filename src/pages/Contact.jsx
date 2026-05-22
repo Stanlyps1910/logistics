@@ -11,30 +11,24 @@ const pageVariants = {
 
 const offices = [
   {
-    city: "Bengaluru (HQ)",
-    address: "Koramangala 5th Block, Bengaluru, KA 560095",
-    phone: "+91 (80) 555-SRI",
-    mail: "hq@srirangalogistics.com"
+    city: "Bengaluru HQ",
+    address: "431, Immaculate, HMT, Nagasandra Post, Bengaluru Urban, Karnataka - 560073",
+    phone: "+91 96200 12227",
+    mail: "info@sriranga.in"
   },
   {
-    city: "Mumbai Terminal",
-    address: "JNPT Cargo Center, Sector 4, Navi Mumbai, MH",
-    phone: "+91 (22) 555-SRI",
-    mail: "bom@srirangalogistics.com"
-  },
-  {
-    city: "New Delhi Node",
-    address: "IGI Cargo Terminal, Phase 2, New Delhi, DL",
-    phone: "+91 (11) 555-SRI",
-    mail: "del@srirangalogistics.com"
+    city: "Operations Hub",
+    address: "Bengaluru Rural Terminal, HMT Estate, Karnataka - 562123",
+    phone: "+91 96200 12227",
+    mail: "ops@sriranga.in"
   }
 ];
 
 const departments = [
-  { name: "Road Transport Department", contact: "roadfreight@srirangalogistics.com" },
-  { name: "Air Cargo Operations", contact: "aircargo@srirangalogistics.com" },
-  { name: "Temperature-Controlled Logistics", contact: "coldchain@srirangalogistics.com" },
-  { name: "General Inquiries", contact: "connect@srirangalogistics.com" }
+  { name: "Full Truckload & Upcountry", contact: "ftl@sriranga.in" },
+  { name: "Intra-City & Relocations", contact: "shifting@sriranga.in" },
+  { name: "Specialized & ODC Cargo", contact: "odc@sriranga.in" },
+  { name: "General Inquiries", contact: "info@sriranga.in" }
 ];
 
 const faqsList = [
@@ -43,16 +37,16 @@ const faqsList = [
     answer: "We map your shipment using our route planning system, which monitors weather patterns, port congestion, and highway traffic to select the fastest, most reliable paths."
   },
   {
-    question: "How do you guarantee temperature safety for cold chain goods?",
-    answer: "Our temperature-controlled cargo containers are equipped with backup power systems and real-time alerts that notify our operations team immediately of any temperature variation."
+    question: "How do you guarantee cargo safety during transit?",
+    answer: "Our fleets are monitored in real-time, drivers are professionally trained, and cargo is fully insured and verified at every transition checkpoint."
   },
   {
     question: "Can I modify shipping routes after my cargo has departed?",
     answer: "Yes. You can contact our operations support team or use our digital portal to request address updates, warehouse holds, or shipping redirects while in transit."
   },
   {
-    question: "What happens if customs clearance is delayed?",
-    answer: "Our customs team pre-verifies all shipping invoices and clearance documents 24 hours prior to arrival at ports or airports to ensure compliance and avoid unnecessary delays."
+    question: "Do you offer eco-friendly logistics options?",
+    answer: "Yes. Sri Ranga Logistics actively deploys EV and CNG vehicles in our intra-city fleet to help corporate clients achieve their sustainability goals."
   }
 ];
 
@@ -136,7 +130,7 @@ export default function Contact() {
         
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200/50 text-xs font-black uppercase tracking-widest text-primary mb-4 font-display">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/50 text-xs font-black uppercase tracking-widest text-primary mb-4 font-display">
             <MessageSquare className="w-3.5 h-3.5" />
             <span>Contact Support</span>
           </div>
@@ -158,9 +152,9 @@ export default function Contact() {
                 Our Offices
               </h2>
               
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {offices.map((office, idx) => (
-                  <div key={idx} className="glass-card p-5 rounded-2xl border border-blue-100 bg-white/70">
+                  <div key={idx} className="glass-card p-5 rounded-2xl border border-emerald-100 bg-white/70">
                     <h3 className="font-bold text-dark font-display text-sm uppercase mb-3">
                       {office.city}
                     </h3>
@@ -187,7 +181,7 @@ export default function Contact() {
               <h3 className="text-xl font-bold font-display uppercase tracking-wide text-dark mb-4">
                 Key Departments
               </h3>
-              <div className="glass-card p-6 rounded-2xl border border-blue-100 bg-white/70 space-y-3">
+              <div className="glass-card p-6 rounded-2xl border border-emerald-100 bg-white/70 space-y-3">
                 {departments.map((dept, idx) => (
                   <div key={idx} className="flex flex-col sm:flex-row justify-between sm:items-center text-sm py-2.5 border-b border-slate-100 last:border-0 last:pb-0 first:pt-0">
                     <span className="font-semibold text-slate-700">{dept.name}</span>
@@ -199,7 +193,7 @@ export default function Contact() {
           </div>
 
           {/* Right Column: Contact Form */}
-          <div className="glass-card p-8 rounded-3xl border border-blue-100 bg-white shadow-xl shadow-blue-500/5">
+          <div className="glass-card p-8 rounded-3xl border border-emerald-100 bg-white shadow-xl shadow-emerald-500/5">
             <h2 className="text-xl font-bold font-display uppercase tracking-wide text-dark mb-6 border-b border-slate-100 pb-2">
               Send Us a Message
             </h2>
@@ -258,7 +252,7 @@ export default function Contact() {
                   name="whatsapp"
                   value={formData.whatsapp}
                   onChange={handleChange}
-                  placeholder="e.g. +91 98765 43210"
+                  placeholder="e.g. +91 96200 12227"
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-primary text-sm font-medium"
                   required
                 />
@@ -275,8 +269,8 @@ export default function Contact() {
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-primary text-sm font-medium cursor-pointer"
                 >
                   <option>Route Planning & Tracking</option>
-                  <option>Cold Chain Cargo</option>
-                  <option>Customs Clearance & Documentation</option>
+                  <option>Eco-Friendly EV & CNG Fleet</option>
+                  <option>Household & Shifting Relocation</option>
                   <option>Partnerships & Sales</option>
                 </select>
               </div>
@@ -299,7 +293,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-4 bg-primary hover:bg-secondary text-white font-bold uppercase tracking-wider font-display rounded-xl shadow-[0_4px_15px_rgba(0,71,204,0.2)] hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer text-base disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full py-4 bg-primary hover:bg-secondary text-white font-bold uppercase tracking-wider font-display rounded-xl shadow-[0_4px_15px_rgba(0,76,41,0.2)] hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer text-base disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -323,7 +317,7 @@ export default function Contact() {
             <h2 className="text-xl font-bold font-display uppercase tracking-wide text-dark mb-6">
               Our Logistics Network Map
             </h2>
-            <div className="glass-card p-6 rounded-3xl border border-blue-100 bg-white/70 aspect-video flex flex-col justify-center items-center relative overflow-hidden">
+            <div className="glass-card p-6 rounded-3xl border border-emerald-100 bg-white/70 aspect-video flex flex-col justify-center items-center relative overflow-hidden">
               
               {/* Decorative grid background for mock map */}
               <div className="absolute inset-0 grid-lines opacity-60"></div>
@@ -331,26 +325,26 @@ export default function Contact() {
               {/* Mock map graphics */}
               <svg className="w-full h-full relative z-10 opacity-75" viewBox="0 0 500 280">
                 {/* Landmass outline sketches */}
-                <path d="M50 80 Q90 90 120 70 T180 110 T250 80" fill="none" stroke="rgba(0, 71, 204, 0.1)" strokeWidth="8" strokeLinecap="round" />
-                <path d="M300 150 Q350 180 400 140 T480 190" fill="none" stroke="rgba(0, 71, 204, 0.1)" strokeWidth="12" strokeLinecap="round" />
+                <path d="M50 80 Q90 90 120 70 T180 110 T250 80" fill="none" stroke="rgba(0, 76, 41, 0.1)" strokeWidth="8" strokeLinecap="round" />
+                <path d="M300 150 Q350 180 400 140 T480 190" fill="none" stroke="rgba(0, 76, 41, 0.1)" strokeWidth="12" strokeLinecap="round" />
                 
                 {/* Connecting lines */}
-                <path d="M120 70 L350 180 L250 80 Z" stroke="rgba(0, 180, 216, 0.25)" strokeWidth="1.5" strokeDasharray="5 5" />
+                <path d="M120 70 L350 180 L250 80 Z" stroke="rgba(16, 185, 129, 0.25)" strokeWidth="1.5" strokeDasharray="5 5" />
                 
                 {/* Pulse circles for nodes */}
-                <circle cx="120" cy="70" r="5" fill="#0047cc" />
-                <circle cx="120" cy="70" r="12" stroke="#0047cc" strokeWidth="1" strokeOpacity="0.4" className="animate-ping" style={{ transformOrigin: "120px 70px" }} />
+                <circle cx="120" cy="70" r="5" fill="#004c29" />
+                <circle cx="120" cy="70" r="12" stroke="#004c29" strokeWidth="1" strokeOpacity="0.4" className="animate-ping" style={{ transformOrigin: "120px 70px" }} />
                 
-                <circle cx="350" cy="180" r="5" fill="#00b4d8" />
-                <circle cx="250" cy="80" r="5" fill="#0047cc" />
+                <circle cx="350" cy="180" r="5" fill="#10b981" />
+                <circle cx="250" cy="80" r="5" fill="#004c29" />
               </svg>
 
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-white/95 border border-blue-100 flex justify-between items-center z-20 shadow-md">
+              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-white/95 border border-emerald-100 flex justify-between items-center z-20 shadow-md">
                 <div className="text-left">
                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 font-display">Location Coordinates</span>
                   <span className="block font-bold text-dark text-xs font-display">LAT 12.9716 / LON 77.5946</span>
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-primary font-display border border-primary/20 px-2 py-1 rounded bg-blue-50">
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary font-display border border-primary/20 px-2 py-1 rounded bg-emerald-50">
                   ONLINE
                 </span>
               </div>

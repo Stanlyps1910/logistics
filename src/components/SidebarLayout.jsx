@@ -19,7 +19,7 @@ export default function SidebarLayout({
   const sidebarBg = isDark ? "bg-dark border-r border-white/10" : "bg-white border-r border-slate-200";
   const textColor = isDark ? "text-white" : "text-dark";
   const mutedText = isDark ? "text-white/40" : "text-slate-400";
-  const activeBg = isDark ? "bg-blue-500/15 text-blue-400 border-l-2 border-blue-400" : "bg-blue-50 text-primary border-l-2 border-primary";
+  const activeBg = isDark ? "bg-emerald-500/15 text-emerald-400 border-l-2 border-emerald-400" : "bg-emerald-50 text-primary border-l-2 border-primary";
   const inactiveBg = isDark ? "text-white/50 hover:bg-white/5 hover:text-white" : "text-slate-500 hover:bg-slate-50 hover:text-dark";
   const topBarBg = isDark ? "bg-dark/90 border-b border-white/5" : "bg-white/90 border-b border-slate-200";
 
@@ -69,7 +69,7 @@ export default function SidebarLayout({
         <div className={`px-4 py-3 border-t lg:px-4 lg:py-4 ${isDark ? "border-white/10" : "border-slate-200"}`}>
           <div className="flex items-center gap-3 px-2 mb-2">
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-display font-bold text-xs flex-shrink-0 ${
-              isDark ? "bg-blue-500/15 text-blue-400" : "bg-blue-50 text-primary"
+              isDark ? "bg-emerald-500/15 text-emerald-400" : "bg-emerald-50 text-primary"
             }`}>
               {user?.name?.split(" ").map(n => n[0]).join("") || "U"}
             </div>

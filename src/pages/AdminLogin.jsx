@@ -56,10 +56,10 @@ export default function AdminLogin() {
       exit="exit"
       className="page-container pt-16 grid-lines"
     >
-      <section className="relative min-h-[90vh] flex items-center justify-center px-4 py-20 bg-gradient-to-b from-[#f0f4ff]/50 via-white to-white">
+      <section className="relative min-h-[90vh] flex items-center justify-center px-4 py-20 bg-gradient-to-b from-emerald-50/30 via-white to-white">
         <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-          <div className="absolute top-[20%] left-[10%] w-[30vw] h-[30vw] rounded-full bg-blue-100/30 blur-3xl" />
-          <div className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] rounded-full bg-cyan-100/30 blur-3xl" />
+          <div className="absolute top-[20%] left-[10%] w-[30vw] h-[30vw] rounded-full bg-emerald-100/20 blur-3xl" />
+          <div className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] rounded-full bg-teal-100/20 blur-3xl" />
         </div>
 
         <div className="relative z-10 w-full max-w-md">
@@ -70,7 +70,7 @@ export default function AdminLogin() {
             transition={{ delay: 0.2 }}
             className="text-center mb-8"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-dark to-primary rounded-2xl shadow-[0_8px_25px_rgba(0,71,204,0.4)] mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-dark to-primary rounded-2xl shadow-[0_8px_25px_rgba(0,76,41,0.4)] mb-4">
               <Shield className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-extrabold font-display text-dark tracking-tight">Admin Panel</h1>
@@ -106,7 +106,7 @@ export default function AdminLogin() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="admin@srirangalogistics.com"
                     required
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-blue-100 bg-white/80 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm font-sans text-dark transition-all"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-emerald-100 bg-white/80 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm font-sans text-dark transition-all"
                   />
                 </div>
               </div>
@@ -121,7 +121,7 @@ export default function AdminLogin() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     required
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-blue-100 bg-white/80 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm font-sans text-dark transition-all"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-emerald-100 bg-white/80 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm font-sans text-dark transition-all"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default function AdminLogin() {
                 disabled={isLoading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-dark to-primary text-white font-bold uppercase font-display tracking-wider rounded-xl shadow-[0_8px_25px_rgba(10,22,40,0.4)] hover:shadow-[0_0_20px_rgba(0,180,216,0.5)] border border-blue-400/20 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-dark to-primary text-white font-bold uppercase font-display tracking-wider rounded-xl shadow-[0_8px_25px_rgba(10,22,40,0.4)] hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] border border-emerald-400/20 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -144,9 +144,9 @@ export default function AdminLogin() {
             </form>
 
             <div className="flex items-center gap-3 my-6">
-              <div className="flex-1 h-px bg-blue-100"></div>
+              <div className="flex-1 h-px bg-emerald-100"></div>
               <span className="text-xs text-slate-400 font-display uppercase tracking-wider">Demo Credentials</span>
-              <div className="flex-1 h-px bg-blue-100"></div>
+              <div className="flex-1 h-px bg-emerald-100"></div>
             </div>
 
             <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/50">

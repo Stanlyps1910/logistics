@@ -34,11 +34,11 @@ export default function ScrollToTop() {
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
           whileHover={{ 
             scale: 1.1,
-            boxShadow: "0 0 15px rgba(0, 71, 204, 0.4)",
-            backgroundColor: "#00b4d8"
+            boxShadow: "0 0 15px rgba(16, 185, 129, 0.4)",
+            backgroundColor: "#10b981"
           }}
           whileTap={{ scale: 0.95 }}
-          className="fixed bottom-6 right-6 z-40 bg-primary text-white p-3 rounded-xl shadow-[0_4px_15px_rgba(0,71,204,0.3)] border border-blue-400/20 cursor-pointer focus:outline-none transition-colors duration-200"
+          className="fixed bottom-6 right-6 z-40 bg-primary text-white p-3 rounded-xl shadow-[0_4px_15px_rgba(0,76,41,0.3)] border border-emerald-400/20 cursor-pointer focus:outline-none transition-colors duration-200"
           aria-label="Scroll to top"
         >
           <ChevronUp className="w-5 h-5 stroke-[2.5]" />

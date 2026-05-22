@@ -331,9 +331,9 @@ export default function InteractiveGlobe() {
         width / 2, height / 2, radius * 0.8,
         width / 2, height / 2, radius * 1.3
       );
-      glowGrad.addColorStop(0, "rgba(0, 180, 216, 0.1)");
-      glowGrad.addColorStop(0.5, "rgba(0, 71, 204, 0.04)");
-      glowGrad.addColorStop(1, "rgba(0, 71, 204, 0)");
+      glowGrad.addColorStop(0, "rgba(16, 185, 129, 0.1)");
+      glowGrad.addColorStop(0.5, "rgba(0, 76, 41, 0.04)");
+      glowGrad.addColorStop(1, "rgba(0, 76, 41, 0)");
       ctx.fillStyle = glowGrad;
       ctx.beginPath();
       ctx.arc(width / 2, height / 2, radius * 1.3, 0, Math.PI * 2);
@@ -359,13 +359,13 @@ export default function InteractiveGlobe() {
       }
 
       // 2. Draw Globe Glass Ocean Background Sphere
-      ctx.fillStyle = "rgba(240, 244, 255, 0.35)"; // Soft semi-transparent ocean
+      ctx.fillStyle = "rgba(240, 247, 244, 0.35)"; // Soft semi-transparent ocean
       ctx.beginPath();
       ctx.arc(width / 2, height / 2, radius, 0, Math.PI * 2);
       ctx.fill();
 
       // Draw subtle globe outline
-      ctx.strokeStyle = "rgba(0, 71, 204, 0.08)";
+      ctx.strokeStyle = "rgba(0, 76, 41, 0.08)";
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -389,9 +389,9 @@ export default function InteractiveGlobe() {
           const proj = project({ x: px, y: py, z: pz });
           
           if (proj.z >= 0) {
-            ctx.strokeStyle = "rgba(0, 71, 204, 0.05)";
+            ctx.strokeStyle = "rgba(0, 76, 41, 0.05)";
           } else {
-            ctx.strokeStyle = "rgba(0, 71, 204, 0.015)";
+            ctx.strokeStyle = "rgba(0, 76, 41, 0.015)";
           }
 
           if (first) {
@@ -421,9 +421,9 @@ export default function InteractiveGlobe() {
           const proj = project({ x: px, y: py, z: pz });
           
           if (proj.z >= 0) {
-            ctx.strokeStyle = "rgba(0, 71, 204, 0.04)";
+            ctx.strokeStyle = "rgba(0, 76, 41, 0.04)";
           } else {
-            ctx.strokeStyle = "rgba(0, 71, 204, 0.015)";
+            ctx.strokeStyle = "rgba(0, 76, 41, 0.015)";
           }
 
           if (first) {
@@ -501,12 +501,12 @@ export default function InteractiveGlobe() {
         
         // Fill country (glassmorphic blue)
         const fillOpacity = Math.max(0.01, (isHQCountry ? 0.22 : 0.13) * fadeValue);
-        ctx.fillStyle = isHQCountry ? `rgba(0, 71, 204, ${fillOpacity})` : `rgba(0, 114, 204, ${fillOpacity})`;
+        ctx.fillStyle = isHQCountry ? `rgba(0, 76, 41, ${fillOpacity})` : `rgba(16, 185, 129, ${fillOpacity})`;
         ctx.fill();
 
         // Stroke country boundary
         const borderOpacity = Math.max(0.02, 0.45 * fadeValue);
-        ctx.strokeStyle = isHQCountry ? `rgba(0, 71, 204, ${borderOpacity})` : `rgba(0, 180, 216, ${borderOpacity})`;
+        ctx.strokeStyle = isHQCountry ? `rgba(0, 76, 41, ${borderOpacity})` : `rgba(16, 185, 129, ${borderOpacity})`;
         ctx.lineWidth = isHQCountry ? 1.5 : 1.0;
         ctx.stroke();
 
@@ -517,7 +517,7 @@ export default function InteractiveGlobe() {
           const labelOpacity = Math.max(0, (1 - distToCenter) * 0.8);
           
           if (labelOpacity > 0.05) {
-            ctx.fillStyle = isHQCountry ? `rgba(0, 71, 204, ${labelOpacity})` : `rgba(71, 85, 105, ${labelOpacity})`;
+            ctx.fillStyle = isHQCountry ? `rgba(0, 76, 41, ${labelOpacity})` : `rgba(71, 85, 105, ${labelOpacity})`;
             ctx.font = `bold ${isHQCountry ? "10px" : "8px"} Space Grotesk`;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -557,9 +557,9 @@ export default function InteractiveGlobe() {
 
           const avgZ = (pStart.z + pEnd.z) / 2;
           if (avgZ > 0.1) {
-            ctx.strokeStyle = "rgba(0, 180, 216, 0.03)";
+            ctx.strokeStyle = "rgba(16, 185, 129, 0.03)";
           } else {
-            ctx.strokeStyle = "rgba(0, 180, 216, 0.35)";
+            ctx.strokeStyle = "rgba(16, 185, 129, 0.35)";
           }
           
           ctx.lineWidth = 1.5;
@@ -582,12 +582,12 @@ export default function InteractiveGlobe() {
 
         // Only draw packet if in the front hemisphere
         if (packetProj.z <= 0.05) {
-          ctx.fillStyle = "#00d4ff";
+          ctx.fillStyle = "#34d399";
           ctx.beginPath();
           ctx.arc(packetProj.x, packetProj.y, 2.5 * packetProj.perspective, 0, Math.PI * 2);
           ctx.fill();
           
-          ctx.strokeStyle = "rgba(0, 212, 255, 0.5)";
+          ctx.strokeStyle = "rgba(52, 211, 153, 0.5)";
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.arc(packetProj.x, packetProj.y, 5 * packetProj.perspective, 0, Math.PI * 2);
@@ -604,7 +604,7 @@ export default function InteractiveGlobe() {
           const isHQ = hub.isHQ;
           
           // Base dot
-          ctx.fillStyle = isHQ ? "#0047cc" : "#00b4d8";
+          ctx.fillStyle = isHQ ? "#004c29" : "#10b981";
           ctx.beginPath();
           ctx.arc(proj.x, proj.y, (isHQ ? 4.5 : 3.5) * proj.perspective, 0, Math.PI * 2);
           ctx.fill();
@@ -615,7 +615,7 @@ export default function InteractiveGlobe() {
           const ringRad = ((isHQ ? 5 : 4) + pulseVal * 14) * proj.perspective;
           const ringAlpha = Math.max(0, 0.85 - pulseVal);
 
-          ctx.strokeStyle = isHQ ? `rgba(0, 71, 204, ${ringAlpha})` : `rgba(0, 180, 216, ${ringAlpha})`;
+          ctx.strokeStyle = isHQ ? `rgba(0, 76, 41, ${ringAlpha})` : `rgba(16, 185, 129, ${ringAlpha})`;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
           ctx.arc(proj.x, proj.y, ringRad, 0, Math.PI * 2);
@@ -640,7 +640,7 @@ export default function InteractiveGlobe() {
             ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
             ctx.font = "800 7px Plus Jakarta Sans";
             ctx.fillText("HQ NODE / BLR", labelX + 1, labelY + 9);
-            ctx.fillStyle = "rgba(0, 71, 204, 0.85)";
+            ctx.fillStyle = "rgba(0, 76, 41, 0.85)";
             ctx.fillText("HQ NODE / BLR", labelX, labelY + 8);
           }
         }

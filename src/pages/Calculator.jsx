@@ -93,7 +93,7 @@ export default function QuoteCalculator() {
         
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200/50 text-xs font-black uppercase tracking-widest text-primary mb-4 font-display">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/50 text-xs font-black uppercase tracking-widest text-primary mb-4 font-display">
             <Calculator className="w-3.5 h-3.5" />
             <span>Delivery Rate Calculator</span>
           </div>
@@ -109,7 +109,7 @@ export default function QuoteCalculator() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           
           {/* Form Panel */}
-          <div className="glass-card p-8 rounded-3xl border border-blue-100 bg-white/70">
+          <div className="glass-card p-8 rounded-3xl border border-emerald-100 bg-white/70">
             <h2 className="text-xl font-bold font-display uppercase tracking-wide text-dark mb-6 border-b border-slate-100 pb-2">
               Route Details
             </h2>
@@ -163,7 +163,7 @@ export default function QuoteCalculator() {
                       key={mode.id}
                       className={`flex flex-col items-center justify-center p-3 rounded-xl border cursor-pointer transition-all text-center ${
                         formData.freightType === mode.id
-                          ? "border-primary bg-blue-50/50 text-primary font-bold shadow-[0_0_10px_rgba(0,71,204,0.1)]"
+                          ? "border-primary bg-emerald-50/50 text-primary font-bold shadow-[0_0_10px_rgba(0,76,41,0.1)]"
                           : "border-slate-100 bg-white text-slate-500 hover:bg-slate-50"
                       }`}
                     >
@@ -265,7 +265,7 @@ export default function QuoteCalculator() {
               <button
                 type="submit"
                 disabled={isCalculating}
-                className="w-full py-4 bg-primary hover:bg-secondary text-white font-bold uppercase tracking-wider font-display rounded-xl shadow-[0_4px_15px_rgba(0,71,204,0.2)] disabled:bg-slate-400 transition-colors flex items-center justify-center gap-2 cursor-pointer text-base"
+                className="w-full py-4 bg-primary hover:bg-secondary text-white font-bold uppercase tracking-wider font-display rounded-xl shadow-[0_4px_15px_rgba(0,76,41,0.2)] disabled:bg-slate-400 transition-colors flex items-center justify-center gap-2 cursor-pointer text-base"
               >
                 {isCalculating ? (
                   <>
@@ -296,7 +296,7 @@ export default function QuoteCalculator() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
-                  className="glass-card p-8 rounded-3xl border border-secondary/30 bg-white shadow-[0_12px_40px_rgba(0,71,204,0.15)] flex flex-col justify-between h-full relative overflow-hidden"
+                  className="glass-card p-8 rounded-3xl border border-secondary/30 bg-white shadow-[0_12px_40px_rgba(0,76,41,0.15)] flex flex-col justify-between h-full relative overflow-hidden"
                 >
                   {/* Subtle Top highlight bar */}
                   <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary to-secondary" />
@@ -306,7 +306,7 @@ export default function QuoteCalculator() {
                       <h3 className="text-xl font-bold font-display uppercase tracking-wide text-dark flex items-center gap-2">
                         <Receipt className="w-5 h-5 text-primary" /> Pricing Breakdown
                       </h3>
-                      <span className="px-2.5 py-1 rounded-md bg-blue-50 text-[10px] font-black font-display text-primary uppercase tracking-widest">
+                      <span className="px-2.5 py-1 rounded-md bg-emerald-50 text-[10px] font-black font-display text-primary uppercase tracking-widest">
                         ESTIMATE
                       </span>
                     </div>
@@ -355,7 +355,7 @@ export default function QuoteCalculator() {
 
                   <div>
                     {/* Glowing price display */}
-                    <div className="p-6 rounded-2xl bg-blue-50/50 border border-blue-100 flex items-center justify-between mb-6">
+                    <div className="p-6 rounded-2xl bg-emerald-50/50 border border-emerald-100 flex items-center justify-between mb-6">
                       <span className="text-xs font-black uppercase tracking-wider text-slate-400 font-display">Estimated Total</span>
                       <span className="text-3xl font-black text-primary font-display">₹{quoteResult.total}</span>
                     </div>
@@ -369,7 +369,7 @@ export default function QuoteCalculator() {
                   </div>
                 </motion.div>
               ) : (
-                <div className="h-full border border-dashed border-blue-200 rounded-3xl flex flex-col items-center justify-center p-8 text-center bg-slate-50/20 min-h-[300px]">
+                <div className="h-full border border-dashed border-emerald-200 rounded-3xl flex flex-col items-center justify-center p-8 text-center bg-slate-50/20 min-h-[300px]">
                   <Calculator className="w-12 h-12 text-slate-300 mb-4" />
                   <h4 className="font-bold text-dark font-display text-base uppercase mb-2">Enter Shipment Details</h4>
                   <p className="text-slate-400 text-xs max-w-xs leading-relaxed">
@@ -383,7 +383,7 @@ export default function QuoteCalculator() {
         </div>
 
         {/* Shipping Guideline notes */}
-        <div className="glass-card p-6 rounded-2xl border border-blue-100/50 bg-white/50 flex items-center gap-4">
+        <div className="glass-card p-6 rounded-2xl border border-emerald-100/50 bg-white/50 flex items-center gap-4">
           <ShieldCheck className="w-6 h-6 text-primary shrink-0" />
           <p className="text-slate-500 text-xs leading-relaxed">
             All generated rates represent estimates. Final booking costs may vary based on route, current fuel prices, and customs duties.

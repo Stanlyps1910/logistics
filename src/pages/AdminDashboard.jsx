@@ -302,7 +302,7 @@ export default function AdminDashboard() {
     {
       icon: Package, value: totalShipments, label: "Total Shipments",
       trend: shipments.filter(s => s.createdAt && new Date(s.createdAt) >= weekAgo).length + " this week",
-      trendUp: true, color: "text-primary", bg: "bg-blue-50",
+      trendUp: true, color: "text-primary", bg: "bg-emerald-50",
     },
     {
       icon: IndianRupee, value: formatCurrency(totalRevenue), label: "Revenue",
@@ -323,7 +323,7 @@ export default function AdminDashboard() {
   const renderDashboard = () => (
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
       <div className="mb-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/50 text-xs font-bold uppercase tracking-widest text-primary mb-2 font-display">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/50 text-xs font-bold uppercase tracking-widest text-primary mb-2 font-display">
           <Shield className="w-3.5 h-3.5" /> Admin Overview
         </div>
         <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-dark tracking-tight font-display uppercase">Operations Dashboard</h1>
@@ -333,7 +333,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
         {kpiCards.map((card, i) => (
           <motion.div key={card.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
-            className="glass-card rounded-xl p-4 sm:p-5 border border-blue-100 bg-white/70"
+            className="glass-card rounded-xl p-4 sm:p-5 border border-emerald-100 bg-white/70"
           >
             <div className="flex items-center justify-between mb-3">
               <div className={`w-10 h-10 rounded-lg ${card.bg} flex items-center justify-center`}>
@@ -360,7 +360,7 @@ export default function AdminDashboard() {
       {/* Visual Recharts Overview */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         {/* Revenue Trend Area Chart */}
-        <div className="lg:col-span-2 glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden flex flex-col p-4 sm:p-5">
+        <div className="lg:col-span-2 glass-card rounded-xl border border-emerald-100 bg-white/70 overflow-hidden flex flex-col p-4 sm:p-5">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
@@ -381,8 +381,8 @@ export default function AdminDashboard() {
               <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0047cc" stopOpacity={0.2}/>
-                    <stop offset="95%" stopColor="#00b4d8" stopOpacity={0.0}/>
+                    <stop offset="5%" stopColor="#004c29" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0.0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -392,17 +392,17 @@ export default function AdminDashboard() {
                   formatter={(value) => [formatCurrency(value), "Revenue"]} 
                   contentStyle={{ backgroundColor: "#ffffff", borderRadius: "8px", border: "1px solid #e2e8f0", fontFamily: "sans-serif" }}
                 />
-                <Area type="monotone" dataKey="revenue" stroke="#0047cc" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRevenue)" />
+                <Area type="monotone" dataKey="revenue" stroke="#004c29" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRevenue)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Shipment Status Pie Chart */}
-        <div className="lg:col-span-1 glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden flex flex-col p-4 sm:p-5">
+        <div className="lg:col-span-1 glass-card rounded-xl border border-emerald-100 bg-white/70 overflow-hidden flex flex-col p-4 sm:p-5">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
                 <Package className="w-5 h-5 text-primary" />
               </div>
               <div>
@@ -462,7 +462,7 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      <div className="glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden">
+      <div className="glass-card rounded-xl border border-emerald-100 bg-white/70 overflow-hidden">
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm font-sans">
             <thead>
@@ -477,7 +477,7 @@ export default function AdminDashboard() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {shipments.map((s) => (
-                <tr key={s._id} className="hover:bg-blue-50/30 transition-colors">
+                <tr key={s._id} className="hover:bg-emerald-50/30 transition-colors">
                   <td className="px-5 py-3.5"><span className="font-bold font-display text-primary text-xs">{s.trackingId}</span></td>
                   <td className="px-5 py-3.5 text-dark font-medium">{s.clientName}</td>
                   <td className="px-5 py-3.5 text-slate-500 text-xs">{s.origin}</td>
@@ -544,7 +544,7 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      <div className="glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden">
+      <div className="glass-card rounded-xl border border-emerald-100 bg-white/70 overflow-hidden">
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm font-sans">
             <thead>
@@ -559,10 +559,10 @@ export default function AdminDashboard() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {clients.map((c) => (
-                <tr key={c.email} className={`transition-colors ${c.status === "Suspended" ? "bg-red-50/40" : "hover:bg-blue-50/30"}`}>
+                <tr key={c.email} className={`transition-colors ${c.status === "Suspended" ? "bg-red-50/40" : "hover:bg-emerald-50/30"}`}>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center font-display font-bold text-primary text-[10px]">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center font-display font-bold text-primary text-[10px]">
                         {c.name.split(" ").map(n => n[0]).join("")}
                       </div>
                       <div>
@@ -600,7 +600,7 @@ export default function AdminDashboard() {
             <div key={c.email} className={`px-4 py-3 ${c.status === "Suspended" ? "bg-red-50/40" : ""}`}>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center font-display font-bold text-primary text-xs">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center font-display font-bold text-primary text-xs">
                     {c.name.split(" ").map(n => n[0]).join("")}
                   </div>
                   <div>
@@ -637,7 +637,7 @@ export default function AdminDashboard() {
         <p className="text-slate-500 text-sm font-sans">{quotes.length} total form queries received</p>
       </div>
 
-      <div className="glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden">
+      <div className="glass-card rounded-xl border border-emerald-100 bg-white/70 overflow-hidden">
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm font-sans">
             <thead>
@@ -652,7 +652,7 @@ export default function AdminDashboard() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {quotes.map((q) => (
-                <tr key={q._id} className="hover:bg-blue-50/30 transition-colors">
+                <tr key={q._id} className="hover:bg-emerald-50/30 transition-colors">
                   <td className="px-5 py-3.5">
                     <span className="font-semibold text-dark text-sm block">{q.name}</span>
                   </td>
@@ -722,7 +722,7 @@ export default function AdminDashboard() {
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
       <h1 className="text-xl sm:text-2xl font-black text-dark tracking-tight font-display uppercase mb-1">Client Support Chat</h1>
       <p className="text-slate-500 text-sm font-sans mb-4 sm:mb-6">Real-time messaging with registered clients</p>
-      <div className="glass-card rounded-xl border border-blue-100 bg-white/70 overflow-hidden">
+      <div className="glass-card rounded-xl border border-emerald-100 bg-white/70 overflow-hidden">
         <ChatBox variant="light" />
       </div>
     </motion.div>
@@ -767,7 +767,7 @@ export default function AdminDashboard() {
             >
               <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center"><Package className="w-5 h-5 text-primary" /></div>
+                  <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center"><Package className="w-5 h-5 text-primary" /></div>
                   <h3 className="text-lg font-bold font-display text-dark">
                     {convertingQuote ? "Convert Quote to Shipment" : "Book New Shipment"}
                   </h3>

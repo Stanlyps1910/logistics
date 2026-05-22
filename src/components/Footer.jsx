@@ -42,7 +42,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#0a1628] text-white pt-16 pb-8 border-t border-blue-950">
+    <footer className="bg-[#071a10] text-white pt-16 pb-8 border-t border-emerald-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Info */}
@@ -58,15 +58,15 @@ export default function Footer() {
             <div className="space-y-3 text-sm text-slate-300">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-secondary shrink-0 mt-0.5" />
-                <span>SRI RANGA LOGISTICS HQ, 5th Block, Koramangala, Bengaluru, KA 560095, India</span>
+                <span>431, Immaculate, HMT, Nagasandra Post, Bengaluru Urban, Karnataka - 560073</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-secondary shrink-0" />
-                <span>+91 (80) 555-SRI</span>
+                <span>+91 96200 12227</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-secondary shrink-0" />
-                <span>connect@srirangalogistics.com</span>
+                <span>info@sriranga.in</span>
               </div>
             </div>
           </div>
@@ -104,12 +104,12 @@ export default function Footer() {
               Core Operations
             </h3>
             <ul className="space-y-3 text-sm text-slate-400">
-              <li>Road Transport</li>
-              <li>Fast Air Shipping</li>
-              <li>Sea Cargo</li>
-              <li>Automated Storage & Packing</li>
-              <li>Local Courier & Delivery</li>
-              <li>Temperature-Controlled Shipping</li>
+              <li>Full Truckload (FTL) & Upcountry</li>
+              <li>Intra-City & Home Shifting</li>
+              <li>Specialized & ODC Movements</li>
+              <li>Container Port Logistics</li>
+              <li>Factory & Household Relocations</li>
+              <li>Eco-Friendly EV & CNG Fleet</li>
             </ul>
           </div>
 
@@ -126,7 +126,7 @@ export default function Footer() {
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full px-3 py-2 text-sm bg-slate-900 border border-blue-900 rounded-l-md text-white focus:outline-none focus:border-secondary"
+                  className="w-full px-3 py-2 text-sm bg-slate-900 border border-emerald-900 rounded-l-md text-white focus:outline-none focus:border-secondary"
                   required
                 />
                 <button
@@ -144,14 +144,20 @@ export default function Footer() {
               <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
                 Compliance Standards
               </h4>
-              <div className="flex gap-4">
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-900/50 border border-blue-950 text-slate-300 text-[10px] font-bold uppercase font-display tracking-wider">
+              <div className="flex flex-wrap gap-3">
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-900/50 border border-emerald-950 text-slate-300 text-[10px] font-bold uppercase font-display tracking-wider">
                   <ShieldCheck className="w-3.5 h-3.5 text-secondary" />
                   <span>ISO 9001</span>
                 </div>
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-900/50 border border-blue-950 text-slate-300 text-[10px] font-bold uppercase font-display tracking-wider">
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-900/50 border border-emerald-950 text-slate-300 text-[10px] font-bold uppercase font-display tracking-wider">
                   <Award className="w-3.5 h-3.5 text-secondary" />
                   <span>TAPA Certified</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-900/50 border border-emerald-950 text-slate-300 text-[9px] font-bold uppercase font-display tracking-wider">
+                  <span>CIN: U7568KA78456PTC14789521</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-900/50 border border-emerald-950 text-slate-300 text-[9px] font-bold uppercase font-display tracking-wider">
+                  <span>GST: 29APVPJ8597F2ZT</span>
                 </div>
               </div>
             </div>
@@ -159,7 +165,7 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-blue-950 my-8"></div>
+        <div className="border-t border-emerald-950 my-8"></div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 space-y-4 sm:space-y-0">

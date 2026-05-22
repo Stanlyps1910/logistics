@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Plane, Ship, Truck, CheckCircle2, Star, Cpu } from "lucide-react";
+import { ArrowRight, Leaf, Shield, Truck, CheckCircle2, Star, Cpu } from "lucide-react";
 import ParticleBackground from "../components/ParticleBackground";
 import StatsCounter from "../components/StatsCounter";
 import InteractiveGlobe from "../components/InteractiveGlobe";
@@ -28,42 +28,42 @@ const wordRevealItem = {
 };
 
 export default function Home() {
-  const heroText = "FAST MOVES , SAFE STORAGE. TRUSTED DELIVERY";
+  const heroText = "FAST MOVES, SAFE STORAGE. TRUSTED DELIVERY";
   const heroWords = heroText.split(" ");
 
   const previewServices = [
     {
       icon: <Truck className="w-8 h-8 text-primary" />,
-      title: "Road Transport",
-      description: "Modern cargo trucks and professional drivers utilizing optimized routes to deliver goods safely.",
+      title: "Full Truckload (FTL) & Upcountry",
+      description: "Robust long-haul transport across major national highway networks with optimized scheduling and route mapping.",
     },
     {
-      icon: <Plane className="w-8 h-8 text-primary" />,
-      title: "Fast Air Shipping",
-      description: "Priority air freight using direct routes and quick airport processing for urgent domestic deliveries.",
+      icon: <Shield className="w-8 h-8 text-primary" />,
+      title: "Intra-City & Relocations",
+      description: "Secure, on-time city deliveries and stress-free household/factory relocation services in the Bengaluru area.",
     },
     {
-      icon: <Ship className="w-8 h-8 text-primary" />,
-      title: "Sea Cargo",
-      description: "Reliable ocean transport with real-time GPS tracking and cargo monitoring for commercial shipments.",
+      icon: <Leaf className="w-8 h-8 text-primary" />,
+      title: "Eco-Friendly EV & CNG Fleet",
+      description: "Active deployment of electric vehicles (EVs) and clean CNG models to deliver sustainable, low-emission supply chain solutions.",
     }
   ];
 
   const testimonials = [
     {
-      quote: "SRI RANGA LOGISTICS simplified our cold chain logistics. Their temperature monitoring is reliable, ensuring our pharmaceutical supplies reach safely.",
+      quote: "Sri Ranga Logistics simplified our intra-city movements. Their EV fleet helps us meet our corporate sustainability goals without compromising on-time schedules.",
       author: "Amit Sharma",
       company: "Arogya Pharmaceuticals",
       rating: 5,
     },
     {
-      quote: "Their road transport fleet is incredibly consistent. The simple tracking system has helped us manage our warehouse inventory and schedule shipments easily.",
+      quote: "Their FTL service is incredibly consistent. The customer support has helped us manage our inventory and coordinate upcountry transport flawlessly.",
       author: "Rajesh Mehta",
       company: "Mehta Distributors",
       rating: 5,
     },
     {
-      quote: "We calculated shipping costs across major Indian states instantly. The quote calculator is extremely accurate and helps us plan our logistics budget.",
+      quote: "We estimated logistics costs for our long-haul cargo instantly. The digital quote calculator is highly accurate and streamlined our supply chain budgeting.",
       author: "Sanjay Singhania",
       company: "Singhania Steel & Power",
       rating: 5,
@@ -83,13 +83,13 @@ export default function Home() {
       className="page-container pt-16 grid-lines"
     >
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#f0f4ff]/50 via-white to-white px-4 border-b border-blue-50">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#f0f7f4]/50 via-white to-white px-4 border-b border-emerald-50">
         <ParticleBackground />
 
         {/* Dynamic geometric layout background */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-          <div className="absolute top-[20%] left-[10%] w-[30vw] h-[30vw] rounded-full bg-blue-100/30 blur-3xl" />
-          <div className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] rounded-full bg-cyan-100/30 blur-3xl" />
+          <div className="absolute top-[20%] left-[10%] w-[30vw] h-[30vw] rounded-full bg-emerald-100/20 blur-3xl" />
+          <div className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] rounded-full bg-emerald-100/10 blur-3xl" />
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10 py-16 md:py-24 px-4 w-full">
@@ -102,7 +102,7 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200/50 text-xs font-black uppercase tracking-widest text-primary mb-6"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/50 text-xs font-black uppercase tracking-widest text-primary mb-6"
               >
                 <Cpu className="w-3.5 h-3.5 text-secondary animate-pulse" />
                 <span>Smart Logistics Platform</span>
@@ -137,7 +137,7 @@ export default function Home() {
                 transition={{ delay: 0.8, duration: 0.6 }}
                 className="mt-6 text-base md:text-xl text-slate-600 max-w-3xl mx-auto lg:mx-0 font-sans leading-relaxed"
               >
-                Experience reliable scheduling, optimized route planning, and complete supply-chain transparency. A modern logistics network designed for fast and secure shipping.
+                Experience reliable scheduling, optimized route planning, and complete supply-chain transparency. A modern logistics network designed for fast, safe, and sustainable delivery.
               </motion.p>
 
               {/* CTAs */}
@@ -154,7 +154,7 @@ export default function Home() {
                 >
                   <Link
                     to="/calculator"
-                    className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold uppercase font-display tracking-wider rounded-xl shadow-[0_8px_25px_rgba(0,71,204,0.3)] hover:shadow-[0_0_20px_rgba(0,180,216,0.6)] border border-blue-400/20 transition-all duration-300"
+                    className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold uppercase font-display tracking-wider rounded-xl shadow-[0_8px_25px_rgba(0,76,41,0.3)] hover:shadow-[0_0_20px_rgba(16,185,129,0.6)] border border-emerald-400/20 transition-all duration-300"
                   >
                     Get a Quote <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -167,7 +167,7 @@ export default function Home() {
                 >
                   <Link
                     to="/tracker"
-                    className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-800 font-bold uppercase font-display tracking-wider rounded-xl border border-blue-100/80 shadow-[0_8px_32px_rgba(0,71,204,0.05)] hover:bg-slate-50 transition-all duration-300"
+                    className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-800 font-bold uppercase font-display tracking-wider rounded-xl border border-emerald-100/80 shadow-[0_8px_32px_rgba(0,76,41,0.05)] hover:bg-slate-50 transition-all duration-300"
                   >
                     Track Shipment
                   </Link>
@@ -188,14 +188,14 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Animated route dots in blue visual block */}
+        {/* Animated route dots in visual block */}
         <div className="absolute bottom-0 left-0 w-full h-12 overflow-hidden pointer-events-none opacity-60">
-          <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-blue-200 to-transparent absolute bottom-6"></div>
+          <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-emerald-200 to-transparent absolute bottom-6"></div>
           {/* Animated Route Node Dots */}
           {[...Array(6)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute bottom-[21px] w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_8px_#00b4d8]"
+              className="absolute bottom-[21px] w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_8px_#10b981]"
               initial={{ left: "-10%" }}
               animate={{ left: "110%" }}
               transition={{
@@ -210,15 +210,15 @@ export default function Home() {
       </section>
 
       {/* Live Stats Section */}
-      <section className="py-16 bg-gradient-to-b from-white to-[#f0f4ff]/40 border-b border-blue-50">
+      <section className="py-16 bg-gradient-to-b from-white to-[#f0f7f4]/40 border-b border-emerald-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center p-6 glass-card rounded-2xl">
               <p className="text-4xl md:text-5xl font-black text-primary font-display mb-2">
-                <StatsCounter targetValue={4800} suffix="+" />
+                <StatsCounter targetValue={30} suffix="+" />
               </p>
               <p className="text-xs md:text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
-                Active Fleets
+                Owned Fleet
               </p>
             </div>
             
@@ -227,22 +227,22 @@ export default function Home() {
                 <StatsCounter targetValue={99} suffix=".9%" />
               </p>
               <p className="text-xs md:text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
-                Precision In Transit
+                On-Time Precision
               </p>
             </div>
 
             <div className="text-center p-6 glass-card rounded-2xl">
               <p className="text-4xl md:text-5xl font-black text-primary font-display mb-2">
-                <StatsCounter targetValue={142} suffix="" />
+                <StatsCounter targetValue={28} suffix="" />
               </p>
               <p className="text-xs md:text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
-                Countries Synced
+                States Network
               </p>
             </div>
 
             <div className="text-center p-6 glass-card rounded-2xl">
               <p className="text-4xl md:text-5xl font-black text-primary font-display mb-2">
-                <StatsCounter targetValue={2} prefix="" suffix=".4B+" />
+                <StatsCounter targetValue={100} prefix="" suffix="K+" />
               </p>
               <p className="text-xs md:text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                 Tons Securely Hauled
@@ -253,14 +253,14 @@ export default function Home() {
       </section>
 
       {/* Services Highlight Section */}
-      <section className="py-24 bg-white border-b border-blue-50">
+      <section className="py-24 bg-white border-b border-emerald-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-5xl font-black text-dark tracking-tight">
-              OUR LOGISTICS SERVICES
+              CORE LOGISTICS OPERATIONS
             </h2>
             <p className="mt-4 text-base md:text-lg text-slate-500">
-              Integrating reliable vehicle routing, real-time tracking, and efficient cargo handling to deliver dependable logistics.
+              Integrating reliable vehicle routing, real-time tracking, and green fleet logistics to deliver dependable supply chain services.
             </p>
           </div>
 
@@ -274,10 +274,10 @@ export default function Home() {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
                 whileHover={{ y: -8 }}
-                className="glass-card p-8 rounded-2xl flex flex-col justify-between group cursor-pointer border border-blue-100 hover:border-secondary/40 shadow-[0_8px_32px_rgba(0,71,204,0.06)] hover:shadow-[0_12px_40px_rgba(0,71,204,0.12)] bg-white/70"
+                className="glass-card p-8 rounded-2xl flex flex-col justify-between group cursor-pointer border border-emerald-100 hover:border-secondary/40 shadow-[0_8px_32px_rgba(0,76,41,0.06)] hover:shadow-[0_12px_40px_rgba(0,76,41,0.12)] bg-white/70"
               >
                 <div>
-                  <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  <div className="w-14 h-14 rounded-xl bg-emerald-50 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                     {React.cloneElement(service.icon, {
                       className: "w-7 h-7 text-primary group-hover:text-white transition-colors duration-300"
                     })}
@@ -308,11 +308,11 @@ export default function Home() {
       </section>
 
       {/* Schematic Route Map (Dotted line vector visual) */}
-      <section className="py-20 bg-gradient-to-b from-white to-[#f0f4ff]/30 overflow-hidden relative border-b border-blue-50">
+      <section className="py-20 bg-gradient-to-b from-white to-[#f0f7f4]/30 overflow-hidden relative border-b border-emerald-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/50 text-[10px] font-black uppercase tracking-widest text-primary mb-4 font-display">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/50 text-[10px] font-black uppercase tracking-widest text-primary mb-4 font-display">
                 <span>Real-time Operations</span>
               </div>
               <h2 className="text-3xl md:text-5xl font-black text-dark tracking-tight leading-tight">
@@ -324,7 +324,7 @@ export default function Home() {
 
               <div className="mt-8 space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-blue-50 border border-primary flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-5 h-5 rounded-full bg-emerald-50 border border-primary flex items-center justify-center shrink-0 mt-0.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                   </div>
                   <div>
@@ -334,7 +334,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-blue-50 border border-primary flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-5 h-5 rounded-full bg-emerald-50 border border-primary flex items-center justify-center shrink-0 mt-0.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                   </div>
                   <div>
@@ -346,29 +346,29 @@ export default function Home() {
             </div>
 
             {/* Interactive Vector Route Map */}
-            <div className="relative glass-card p-6 rounded-3xl border border-blue-100 flex items-center justify-center bg-white/60 aspect-video">
+            <div className="relative glass-card p-6 rounded-3xl border border-emerald-100 flex items-center justify-center bg-white/60 aspect-video">
               <svg className="w-full h-full opacity-80" viewBox="0 0 600 350" fill="none" xmlns="http://www.w3.org/2000/svg">
                 {/* Connection lines */}
-                <path d="M100 80 Q250 50 400 120 T500 280" stroke="rgba(0, 71, 204, 0.2)" strokeWidth="2" strokeDasharray="6 4" />
-                <path d="M100 80 Q180 180 300 200 T500 280" stroke="rgba(0, 180, 216, 0.2)" strokeWidth="1.5" strokeDasharray="4 4" />
-                <path d="M150 280 Q300 250 400 120" stroke="rgba(0, 71, 204, 0.15)" strokeWidth="2" strokeDasharray="8 6" />
-                <path d="M300 200 Q420 220 500 100" stroke="rgba(0, 212, 255, 0.25)" strokeWidth="1.5" strokeDasharray="5 3" />
+                <path d="M100 80 Q250 50 400 120 T500 280" stroke="rgba(0, 76, 41, 0.2)" strokeWidth="2" strokeDasharray="6 4" />
+                <path d="M100 80 Q180 180 300 200 T500 280" stroke="rgba(16, 185, 129, 0.2)" strokeWidth="1.5" strokeDasharray="4 4" />
+                <path d="M150 280 Q300 250 400 120" stroke="rgba(0, 76, 41, 0.15)" strokeWidth="2" strokeDasharray="8 6" />
+                <path d="M300 200 Q420 220 500 100" stroke="rgba(16, 185, 129, 0.25)" strokeWidth="1.5" strokeDasharray="5 3" />
 
                 {/* Nodes */}
-                <circle cx="100" cy="80" r="6" fill="#0047cc" />
-                <circle cx="100" cy="80" r="14" stroke="#0047cc" strokeWidth="1" strokeOpacity="0.4" className="animate-ping" style={{ transformOrigin: "100px 80px" }} />
+                <circle cx="100" cy="80" r="6" fill="#004c29" />
+                <circle cx="100" cy="80" r="14" stroke="#004c29" strokeWidth="1" strokeOpacity="0.4" className="animate-ping" style={{ transformOrigin: "100px 80px" }} />
                 
-                <circle cx="400" cy="120" r="5" fill="#00b4d8" />
-                <circle cx="300" cy="200" r="7" fill="#0047cc" />
+                <circle cx="400" cy="120" r="5" fill="#10b981" />
+                <circle cx="300" cy="200" r="7" fill="#004c29" />
                 
-                <circle cx="150" cy="280" r="5" fill="#00b4d8" />
-                <circle cx="500" cy="280" r="8" fill="#0047cc" />
-                <circle cx="500" cy="280" r="16" stroke="#0047cc" strokeWidth="1" strokeOpacity="0.3" className="animate-ping" style={{ transformOrigin: "500px 280px" }} />
+                <circle cx="150" cy="280" r="5" fill="#10b981" />
+                <circle cx="500" cy="280" r="8" fill="#004c29" />
+                <circle cx="500" cy="280" r="16" stroke="#004c29" strokeWidth="1" strokeOpacity="0.3" className="animate-ping" style={{ transformOrigin: "500px 280px" }} />
                 
-                <circle cx="500" cy="100" r="4" fill="#00b4d8" />
+                <circle cx="500" cy="100" r="4" fill="#10b981" />
 
                 {/* Moving Route Dots */}
-                <circle r="4" fill="#00d4ff" className="shadow-[0_0_8px_#00d4ff]">
+                <circle r="4" fill="#34d399" className="shadow-[0_0_8px_#34d399]">
                   <animateMotion 
                     dur="7s" 
                     repeatCount="indefinite" 
@@ -376,7 +376,7 @@ export default function Home() {
                   />
                 </circle>
 
-                <circle r="3.5" fill="#0047cc">
+                <circle r="3.5" fill="#004c29">
                   <animateMotion 
                     dur="10s" 
                     repeatCount="indefinite" 
@@ -384,7 +384,7 @@ export default function Home() {
                   />
                 </circle>
 
-                <circle r="3" fill="#00b4d8">
+                <circle r="3" fill="#10b981">
                   <animateMotion 
                     dur="5s" 
                     repeatCount="indefinite" 
@@ -393,8 +393,8 @@ export default function Home() {
                 </circle>
 
                 {/* Text Labels */}
-                <text x="75" y="60" fill="#0a1628" fontSize="10" fontWeight="bold" fontFamily="Space Grotesk">BENGALURU HQ</text>
-                <text x="445" y="305" fill="#0a1628" fontSize="10" fontWeight="bold" fontFamily="Space Grotesk">CHENNAI PORT</text>
+                <text x="75" y="60" fill="#071a10" fontSize="10" fontWeight="bold" fontFamily="Space Grotesk">BENGALURU HQ</text>
+                <text x="445" y="305" fill="#071a10" fontSize="10" fontWeight="bold" fontFamily="Space Grotesk">CHENNAI PORT</text>
                 <text x="240" y="222" fill="#334155" fontSize="9" fontFamily="Plus Jakarta Sans" fontWeight="bold">MUMBAI PORT</text>
               </svg>
             </div>
@@ -403,20 +403,20 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 bg-white border-b border-blue-50">
+      <section className="py-24 bg-white border-b border-emerald-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-5xl font-black text-dark tracking-tight">
               CLIENT TESTIMONIALS
             </h2>
             <p className="mt-4 text-slate-500 text-base md:text-lg">
-              What corporate partners, distributors, and operations managers say about working with SRI RANGA LOGISTICS.
+              What corporate partners, distributors, and operations managers say about working with Sri Ranga Logistics.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((t, idx) => (
-              <div key={idx} className="glass-card p-8 rounded-2xl border border-blue-100 flex flex-col justify-between bg-white relative">
+              <div key={idx} className="glass-card p-8 rounded-2xl border border-emerald-100 flex flex-col justify-between bg-white relative">
                 <div>
                   <div className="flex gap-1 mb-5">
                     {[...Array(t.rating)].map((_, i) => (
@@ -438,7 +438,7 @@ export default function Home() {
       </section>
 
       {/* Client Logo Ticker Bar */}
-      <section className="py-12 bg-slate-50/50 border-b border-blue-50 overflow-hidden">
+      <section className="py-12 bg-slate-50/50 border-b border-emerald-50 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-slate-400 font-display mb-6">
             Trusted by Leading Enterprises
@@ -448,12 +448,12 @@ export default function Home() {
             {/* Infinite Horizontal Logo Scroll */}
             <div className="flex space-x-12 whitespace-nowrap min-w-full justify-between items-center opacity-40" style={{ animation: 'marquee 20s linear infinite' }}>
               {logos.map((logo, index) => (
-                <span key={index} className="text-sm font-black font-display tracking-widest text-[#0a1628]">
+                <span key={index} className="text-sm font-black font-display tracking-widest text-[#071a10]">
                   {logo}
                 </span>
               ))}
               {logos.map((logo, index) => (
-                <span key={`dup-${index}`} className="text-sm font-black font-display tracking-widest text-[#0a1628]">
+                <span key={`dup-${index}`} className="text-sm font-black font-display tracking-widest text-[#071a10]">
                   {logo}
                 </span>
               ))}

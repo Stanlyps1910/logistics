@@ -18,8 +18,8 @@ export default function FAQAccordion({ faqs }) {
             key={index}
             className={`glass-card rounded-xl overflow-hidden transition-all duration-300 ${
               isOpen 
-                ? "border-blue-300 shadow-[0_12px_24px_rgba(0,71,204,0.08)] bg-white" 
-                : "hover:border-blue-200"
+                ? "border-emerald-300 shadow-[0_12px_24px_rgba(0,76,41,0.08)] bg-white" 
+                : "hover:border-emerald-200"
             }`}
           >
             <button
@@ -30,7 +30,7 @@ export default function FAQAccordion({ faqs }) {
               <motion.span
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="text-primary shrink-0 ml-4 p-1 rounded-lg bg-blue-50"
+                className="text-primary shrink-0 ml-4 p-1 rounded-lg bg-emerald-50"
               >
                 <ChevronDown className="w-4 h-4" />
               </motion.span>
