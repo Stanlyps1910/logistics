@@ -32,7 +32,7 @@ export default function SidebarLayout({
         />
       )}
 
-      <aside className={`fixed top-0 left-0 z-30 h-full w-64 flex flex-col transition-transform duration-300 lg:top-[72px] lg:h-[calc(100vh-72px)] ${
+      <aside className={`fixed top-0 left-0 z-50 lg:z-30 h-full w-64 flex flex-col transition-transform duration-300 lg:top-[72px] lg:h-[calc(100vh-72px)] ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       } ${sidebarBg}`}>
         <div className={`flex items-center gap-3 px-5 py-4 border-b lg:px-6 lg:py-5 ${isDark ? "border-white/10" : "border-slate-200"}`}>
